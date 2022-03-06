@@ -1,0 +1,4 @@
+name : fifo, 0xa0000000, 0x1000
+driver: 1
+info: "Test AXIS-FIFO provided by Ziv"
+version: 1.0

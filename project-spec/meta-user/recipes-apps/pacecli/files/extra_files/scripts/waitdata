@@ -1,0 +1,17 @@
+function main()
+
+    print ("To wait the data ... ");
+    num = 1;
+    while num < 5 do
+
+	r, d = regget(32, "fctrl.size");
+	if (tonumber(d) == 10) then 
+	    print("The 10 is found in the register");
+	    break;
+	end;
+
+	cli("sleep 1000");
+	num = num + 1;
+    end;
+
+end;

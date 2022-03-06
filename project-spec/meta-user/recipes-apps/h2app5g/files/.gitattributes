@@ -1,0 +1,76 @@
+#---------------------------------------------------
+# file filter
+#---------------------------------------------------
+h2app/version.cpp filter=git_log_version
+wix/version.wxi filter=git_log_version
+
+#---------------------------------------------------
+# default file format
+#---------------------------------------------------
+#*         binary
+#*         text
+#---------------------------------------------------
+# text file with line feed
+#---------------------------------------------------
+*.ORG     text eol=lf
+*.bis     text eol=lf
+*.c       text eol=lf
+*.cc      text eol=lf
+*.config  text eol=lf
+*.cpp     text eol=lf
+*.css     text eol=lf
+*.cxx     text eol=lf
+*.dist    text eol=lf
+*.engine  text eol=lf
+*.h       text eol=lf
+*.html    text eol=lf
+*.in      text eol=lf
+*.inc     text eol=lf
+*.install text eol=lf
+*.js      text eol=lf
+*.json    text eol=lf
+*.lock    text eol=lf
+*.m       text eol=lf
+*.map     text eol=lf
+*.md      text eol=lf
+*.module  text eol=lf
+*.php     text eol=lf
+*.po      text eol=lf
+*.profile text eol=lf
+*.script  text eol=lf
+*.sh      text eol=lf
+*.sql     text eol=lf
+*.theme   text eol=lf
+*.twig    text eol=lf
+*.txt     text eol=lf
+*.wxi     text eol=lf
+*.xml     text eol=lf
+*.yml     text eol=lf
+*.sln     text eol=lf
+#---------------------------------------------------
+# text file with carriage return and line feed
+#---------------------------------------------------
+*.rc      text eol=crlf
+resource.h  text eol=crlf
+#---------------------------------------------------
+# binary file
+# Define binary file attributes.
+# - Do not treat them as text.
+# - Include binary diff in patches instead of binary files differ.
+#---------------------------------------------------
+*.doc     binary
+*.docx    binary
+*.exe     binary
+*.gif     binary
+*.gz      binary
+*.ico     binary
+*.jpeg    binary
+*.jpg     binary
+*.mat     binary
+*.pdf     binary
+*.png     binary
+*.phar    binary
+*.pptx    binary
+*.svgz    binary
+*.ttf     binary
+*.xlsx    binary

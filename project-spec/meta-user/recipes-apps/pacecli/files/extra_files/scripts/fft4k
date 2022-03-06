@@ -1,0 +1,349 @@
+-- Script to test FFT
+General_Header_length=24;
+-- listening port
+PORT = 7777
+
+function byte2int(in_table, num)
+
+    out_table = {};
+
+    i = 1;
+    for j=1, (num/4) do
+        out_table[j] = (in_table[i+3]<<24) | (in_table[i+2]<<16) | (in_table[i+1]<<8) | in_table[i]
+        i = i+4;
+    end;
+
+    return out_table;
+end;
+
+function bytes_to_ushort(b1, b2)
+  len = b1 * 256 + b2
+  return len
+end
+
+function ushort_to_bytes(ushort_value)
+  buffer = {} 
+  buffer[1] = ushort_value/256
+  buffer[2] = ushort_value%256
+  return buffer
+end;
+
+function bytes_to_int(b1, b2, b3, b4)
+  if not b4 then error("need four bytes to convert to int",2) end
+  local n = b1*16777216 + b2*65536 + b3*256 + b4
+  n = (n > 2147483647) and (n - 4294967296) or n
+  return n
+end
+
+function int2byte(in_table, num)
+
+    out_table = {};
+
+    j = 1;
+    for i=1, (num) do
+        out_table[j] = (in_table[i]>>24) & 0xFF
+        j = j+1
+        out_table[j] = (in_table[i]>>16) & 0xFF
+        j = j +1
+        out_table[j] = (in_table[i]>>8) & 0xFF
+        j = j+1
+        out_table[j] = (in_table[i]) & 0xFF
+        j = j+1;
+    end;
+
+    return out_table;
+end;
+
+function is_fft(header)
+    fft = bytes_to_ushort(header[14], header[13])
+    if (fft == 2) then
+      return 1
+    else
+      return 0
+    end;
+end;
+
+function setReg0(header, scale)
+   header[19] = 0xFF & scale;
+   header[20] = 0xFF & (scale >> 8);
+end;
+
+function get_max_num_SCS(fft_header)
+   return bytes_to_ushort(fft_header[8], fft_header[7])
+end;
+
+function get_nfft_from_header(fft_header)
+    return bytes_to_ushort(fft_header[2], fft_header[1])
+end;
+
+function get_nfft(size_nFFT)
+    print("size_nFFT= "..size_nFFT);
+    hw_nfft = -1;
+    if (size_nFFT == 0x1000) then
+        hw_nfft = 0xC
+    elseif (size_nFFT == 0x800) then
+        hw_nfft = 0xb
+    elseif (size_nFFT == 0x400) then
+        hw_nfft = 0xa
+    elseif (size_nFFT == 0x200) then
+        hw_nfft = 0x9
+    else
+        print( "Invalid nFFT size: "..size_nFFT.."");
+    end;
+    print("hw_nfft= ", hw_nfft);
+    return hw_nfft
+end;
+
+
+function set_dir_to_matlab(header)
+    header[11] = 1
+    header[12] = 0
+end;
+
+function set_vector_length(header, length)
+    header[4] = (length >> 24) &0xFF
+    header[3] = (length >> 16) &0xFF
+    header[2] = (length >> 8) &0xFF
+    header[1] = length &0xFF
+end;
+
+function sleep(n)
+  os.execute("sleep " .. tonumber(n))
+end
+
+function write_hw_data(data, data_len)
+    print ("Init AXIS-fifo for FFT data");
+    print("Writing "..data_len.." bytes into FIFO")
+    err = writedata(32, "fifo", data);
+    return err
+end;
+
+function read_hw_data()
+    outval = {};
+    u32_len = 12000;
+    print("Reading "..u32_len.." 32-bit samples from FIFO")
+    err, outval = readdata(32, "fifo", u32_len);
+    return err, outval;
+end;
+
+function get_slot_number(gen_header)
+    return bytes_to_ushort(gen_header[6], gen_header[5])
+end;
+
+function get_layer_number(gen_header)
+    return bytes_to_ushort(gen_header[10], gen_header[9])
+end;
+
+function get_symbol_number(gen_header)
+    return bytes_to_ushort(gen_header[8], gen_header[7])
+end;
+    
+function get_num_SCS(fft_header)
+    return bytes_to_ushort(fft_header[6], fft_header[5])
+end;
+
+function get_CpLen(fft_header)
+    return bytes_to_ushort(fft_header[10], fft_header[9])
+end;
+
+function get_fft_start(fft_header)
+    return bytes_to_ushort(fft_header[12], fft_header[11])
+end;
+
+function get_time_offset(fft_header)
+    return bytes_to_ushort(fft_header[14], fft_header[13])
+end;
+
+function init_fft_hw(gen_header, fft_header)
+    regset(32, "fft.ctrl", 0);
+    regset(32, "fft.status", 0);
+    slot_number = get_slot_number(gen_header)
+    print("Slot number:      "..slot_number);
+    regset(32, "fft.seq_num_slot", slot_number);
+    symb_num = get_symbol_number(gen_header)
+    print("Symbol number:      "..symb_num);
+    regset(32, "fft.seq_num_symbol", symb_num);
+    layer_number = get_layer_number(gen_header);
+    regset(32, "fft.seq_num_layer", layer_number);
+    regset(32, "fft.fft_error", 0);
+    regset(32, "fft.fft_error_status", 0);
+    nfft_num = get_nfft_from_header(fft_header);
+    print("nfft_num = "..nfft_num);
+    nfft = get_nfft(nfft_num);
+    print("nfft = "..nfft);
+    print("NFFT:    "..nfft_num.."("..nfft..")");
+    regset(32, "fft.nfft_cfg", nfft);
+    num_SCS = get_num_SCS(fft_header);
+    print("Number of SCS:      "..num_SCS);
+    regset(32, "fft.amount_of_samples", num_SCS);
+    MaxnSCS = get_max_num_SCS(fft_header);
+    print("MAX number of SCS:      "..MaxnSCS);
+    uint32 = math.floor((nfft_num - MaxnSCS) / 2);
+    regset(32, "fft.pad_before_samples", uint32);
+    regset(32, "fft.pad_after_samples", uint32);
+    CpLen = get_CpLen(fft_header);
+    print("CpLen:      "..CpLen);
+    regset(32, "fft.fft_cp_len_all_cfg0", CpLen);
+    regset(32, "fft.fft_cp_len_all_cfg1", CpLen);
+    regset(32, "fft.fft_seq_all_sel_cfg", 0);
+    regset(32, "fft.ftt_transform_configuration", nfft + 0x100);
+--    regset(32, "fft.fft_scale", 0);
+    regset(32, "fft.enable_half_transform_shift", 1);
+    fft_start = get_fft_start(fft_header);
+    print("fft_start:      "..fft_start);
+    time_offset = get_time_offset(fft_header);
+    print("time_offset:      "..time_offset);
+    tmp2 = time_offset + fft_start;
+    print("tmp2:      "..tmp2);
+    regset(32, "fft.start_index_profile_0", fft_start);
+    regset(32, "fft.start_index_profile_1", fft_start);
+    regset(32, "fft.start_index_profile_select", 0);
+    regset(32, "fft.sample_point_profile_0", fft_start);
+    regset(32, "fft.sample_point_profile_1", fft_start);
+    regset(32, "fft.sample_point_profile_select", 0);
+end;
+
+function start_fifo()
+-- Set fifo start
+    regset(32, "fft.ctrl", 0);
+--    sleep(1)
+    regset(32, "fft.ctrl", 1);
+end;
+
+function receive(client, size)
+  received_buffer = {}
+  n = 0
+  idle = 0
+  bytes = size;
+  received = 0;
+  while received < size do
+    res, data = recv(client, bytes);
+    if (res < 0) then
+      print("Error received "..res);
+      received = res;
+      break;
+    end
+    if (res > 0) then
+      print("Received "..res.." bytes")
+      for _,v in ipairs(data) do n=n+1; received_buffer[n]=v end
+      received = received + res;
+      bytes = bytes - res;
+    end
+    if (res == 0) then
+      --print("Received 0 "..idle);
+      idle = idle +1
+      if (idle > 2) then
+        break;
+      end
+      cli( "sleep 600");
+    end
+  end;
+  return received, received_buffer
+end;
+
+function main()
+    h, l = get_cliver();
+
+    print("Lua CLI version:"..string.format("%d.%02d",h, l));
+    print("=========     FFT 4K    ==========")
+    local server = socket();
+    local res = bind(server, "0.0.0.0", PORT);
+::accept::    local client = accept(server);
+    while 1 do
+::loop:: 
+-- Receive General header of General_Header_length bytes
+      res, header = receive(client, General_Header_length);
+
+      if (res > 0) then
+        print(header[1], header[2], header[3], header[4])
+        if (is_fft(header) == 1) then
+	  print("Received General Header with FFT");
+        else
+	  print("Received unknown header")
+	  goto loop
+        end;
+-- Calculate the whole vector size
+        total_size = bytes_to_int(header[4], header[3], header[2], header[1])
+        print("total vector size to receive: "..total_size.." bytes")
+-- Receive length of next header (FFT header)
+        res, fft_len = receive(client, 4);
+        if (res > 0) then
+          print("Received fft header length:")
+          print(fft_len[1], fft_len[2], fft_len[3], fft_len[4])
+        else
+          print("Failed to receive fft header length, exiting")
+          break;
+        end;
+-- Calculate FFT header length
+        fft_header_length = bytes_to_int(fft_len[4], fft_len[3], fft_len[2], fft_len[1])
+        res, fft_header = receive(client, fft_header_length -4);
+        if (res > 0) then
+	  print("Received FFT header")
+        else
+          print("Failed to receive fft header, exiting")
+          break;
+        end;
+        init_fft_hw(header, fft_header);
+        data_size = total_size - General_Header_length - fft_header_length;
+        print("Data samples to receive: "..data_size.." bytes")
+        res, data = receive(client, data_size);
+        if (res > 0) then
+          print("Received data: "..res.." bytes")
+        else
+          print("Failed to receive data, exiting")
+          break;
+        end;
+-- Set fifo start
+	start_fifo()
+--        sleep(1)
+-- Write data samples to axis-fifo
+        res  = write_hw_data(data, res);
+        if (res < 0) then
+          print("Error writing samples to fifo: "..res);
+        end;
+	cli( "sleep 100");
+        data_size, read_data = read_hw_data()
+        if (data_size < 0) then
+          print("Error reading samples from fifo: "..data_size);
+          data_size = 0;
+        else
+	  print("Read "..data_size.." bytes from FIFO")
+        end;
+
+        output_header = header;
+--send data back
+	set_dir_to_matlab(output_header)
+-- Calculate output vector length
+        out_total_len = General_Header_length + data_size
+        set_vector_length(output_header, out_total_len)
+        res, val = regget(32, "fft.fft_scale");
+        if (res < 0) then
+          print ("Read fft scale error, res:"..res);
+        else
+          print ("The fft scale is "..val);
+        end
+        setReg0(output_header, val); 
+       
+        print(output_header[1], output_header[2], output_header[3], output_header[4])
+        res = send(client, output_header);
+        if (res < 0) then
+          print("Error to send the output_header, res:"..res);
+          break;
+        end;
+        res = send(client, read_data);
+        if (res < 0) then
+          print("Error to send the read_data, res:"..res);
+          break;
+        end;      	  
+      else
+        print("Error to receive the data from socket, res:"..res);
+        break;
+      end;
+    end;
+    close(client);
+    if (res == 0) then
+      print("Listening socket has been closed; going to accept new connection...")
+      goto accept
+    end
+    close(server);
+end;

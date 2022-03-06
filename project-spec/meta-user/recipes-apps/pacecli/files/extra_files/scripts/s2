@@ -1,0 +1,50 @@
+-- The test script to work with AXIS-FIFO HW
+vk = "My text from Lua"
+
+function byte2int(in_table, num)
+
+    out_table = {};
+
+    i = 1;
+    for j=1, (num/4) do
+	out_table[j] = (in_table[i+3]<<24) | (in_table[i+2]<<16) | (in_table[i+1]<<8) | in_table[i]
+	i = i+4;
+    end;
+
+    return out_table;
+end;
+
+function main(arg)
+
+    print ("\nHello from my LUA test script(s1) main function");
+    print ("To init AXIS-fifo");
+    regset(32, "fctrl.init", 0);
+    regset(32, "fctrl.init", 1);
+    res, val = regget(32, "fctrl.size");
+    if (res < 0) then 
+	print ("Read fifo size error, res:"..res);
+	return;
+    else
+        print ("The fifo size is "..(val*4).." bytes");
+    end
+
+    --r, a = readdata(32, 0xa0010000, val);
+    r, a = readdata(32, "fifo", val);
+
+    if r < 0 then
+	print("Fifo read error:"..r);
+    else
+	print("Fifo read OK, the data is\n");
+
+	u32 = byte2int(a,r);
+
+	for i=1, (r/4) do
+	    io.write ("  a["..string.format("%03d",i).."]="..string.format("0x%04X",u32[i]));
+	    --io.write ("  a["..i.."]="..string.format("0x%04X",u32[i]));
+	    if (i % 4 == 0) then 
+		print("");
+	    end
+	end
+    end
+    print("");
+end

@@ -1,0 +1,18 @@
+{
+    "header": {
+        "type": "req",
+        "uid": 1
+    },
+    "body": {
+        "load_param_req": {
+            "re:0": {
+                "max_tx_ant": 2,
+                "max_rx_ant": 2
+            },
+            "inventory:0": {
+                "hw_ver": "",
+                "serial_no": ""
+            }
+        }
+    }
+}

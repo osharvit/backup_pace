@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?fileVersion 4.0.0?><cproject storage_type_id="org.eclipse.cdt.core.XmlProjectDescriptionStorage">
+    	
+    <storageModule moduleId="org.eclipse.cdt.core.settings">
+        		
+        <cconfiguration id="xilinx.gnu.arm.a53.linux.exe.debug.200444177">
+            			
+            <storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="xilinx.gnu.arm.a53.linux.exe.debug.200444177" moduleId="org.eclipse.cdt.core.settings" name="Debug">
+                				
+                <externalSettings/>
+                				
+                <extensions>
+                    					
+                    <extension id="com.xilinx.sdk.managedbuilder.XELF.arm.a53.linux" point="org.eclipse.cdt.core.BinaryParser"/>
+                    					
+                    <extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+                    					
+                    <extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+                    					
+                    <extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+                    					
+                    <extension id="org.eclipse.cdt.core.CWDLocator" point="org.eclipse.cdt.core.ErrorParser"/>
+                    					
+                    <extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+                    				
+                </extensions>
+                			
+            </storageModule>
+            			
+            <storageModule moduleId="cdtBuildSystem" version="4.0.0">
+                				
+                <configuration artifactExtension="elf" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug" cleanCommand="rm -rf" description="" id="xilinx.gnu.arm.a53.linux.exe.debug.200444177" name="Debug" parent="xilinx.gnu.arm.a53.linux.exe.debug">
+                    					
+                    <folderInfo id="xilinx.gnu.arm.a53.linux.exe.debug.200444177." name="/" resourcePath="">
+                        						
+                        <toolChain id="xilinx.gnu.arm.a53.linux.exe.debug.toolchain.831755358" name="Xilinx ARM v8 GNU/Linux Toolchain" superClass="xilinx.gnu.arm.a53.linux.exe.debug.toolchain">
+                            							
+                            <targetPlatform binaryParser="com.xilinx.sdk.managedbuilder.XELF.arm.a53.linux" id="xilinx.arm.a53.linux.target.gnu.base.debug.285794798" isAbstract="false" name="Debug Platform" superClass="xilinx.arm.a53.linux.target.gnu.base.debug"/>
+                            							
+                            <builder buildPath="${workspace_loc:/pw-tool}/Debug" enableAutoBuild="true" id="xilinx.gnu.arm.a53.linux.toolchain.builder.debug.1468766423" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="GNU make" superClass="xilinx.gnu.arm.a53.linux.toolchain.builder.debug"/>
+                            							
+                            <tool id="xilinx.gnu.arm.a53.linux.c.toolchain.assembler.debug.117662621" name="ARM v8 Linux gcc assembler" superClass="xilinx.gnu.arm.a53.linux.c.toolchain.assembler.debug">
+                                								
+                                <inputType id="xilinx.gnu.assembler.input.140394459" superClass="xilinx.gnu.assembler.input"/>
+                                							
+                            </tool>
+                            							
+                            <tool id="xilinx.gnu.arm.a53.linux.c.toolchain.compiler.debug.1281501567" name="ARM v8 Linux gcc compiler" superClass="xilinx.gnu.arm.a53.linux.c.toolchain.compiler.debug">
+                                								
+                                <option defaultValue="gnu.c.optimization.level.none" id="xilinx.gnu.compiler.option.optimization.level.221538799" name="Optimization Level" superClass="xilinx.gnu.compiler.option.optimization.level" valueType="enumerated"/>
+                                								
+                                <option id="xilinx.gnu.compiler.option.debugging.level.757277848" name="Debug Level" superClass="xilinx.gnu.compiler.option.debugging.level" useByScannerDiscovery="false" value="gnu.c.debugging.level.max" valueType="enumerated"/>
+                                								
+                                <option id="xilinx.gnu.compiler.inferred.swplatform.flags.1699005947" name="Software Platform Inferred Flags" superClass="xilinx.gnu.compiler.inferred.swplatform.flags" value="${resolvePlatformFile:project=pw-tool,fileType=sysrootFlag}" valueType="string"/>
+                                								
+                                <option id="xilinx.gnu.compiler.inferred.swplatform.includes.633232889" name="Software Platform Include Path" superClass="xilinx.gnu.compiler.inferred.swplatform.includes" valueType="includePath">
+                                    									
+                                    <listOptionValue builtIn="false" value="${resolvePlatformFile:project=pw-tool,fileType=sysrootPath,append=/usr/include}"/>
+                                    								
+                                </option>
+                                								
+                                <inputType id="xilinx.gnu.arm.a53.linux.c.compiler.input.1882864328" name="C source files" superClass="xilinx.gnu.arm.a53.linux.c.compiler.input"/>
+                                							
+                            </tool>
+                            							
+                            <tool id="xilinx.gnu.arm.a53.linux.cxx.toolchain.compiler.debug.384133277" name="ARM v8 Linux g++ compiler" superClass="xilinx.gnu.arm.a53.linux.cxx.toolchain.compiler.debug">
+                                								
+                                <option defaultValue="gnu.c.optimization.level.none" id="xilinx.gnu.compiler.option.optimization.level.165501855" name="Optimization Level" superClass="xilinx.gnu.compiler.option.optimization.level" valueType="enumerated"/>
+                                								
+                                <option id="xilinx.gnu.compiler.option.debugging.level.902161454" name="Debug Level" superClass="xilinx.gnu.compiler.option.debugging.level" useByScannerDiscovery="false" value="gnu.c.debugging.level.max" valueType="enumerated"/>
+                                								
+                                <option id="xilinx.gnu.compiler.inferred.swplatform.flags.1614925384" name="Software Platform Inferred Flags" superClass="xilinx.gnu.compiler.inferred.swplatform.flags" value="${resolvePlatformFile:project=pw-tool,fileType=sysrootFlag}" valueType="string"/>
+                                								
+                                <option id="xilinx.gnu.compiler.inferred.swplatform.includes.1284648707" name="Software Platform Include Path" superClass="xilinx.gnu.compiler.inferred.swplatform.includes" valueType="includePath">
+                                    									
+                                    <listOptionValue builtIn="false" value="${resolvePlatformFile:project=pw-tool,fileType=sysrootPath,append=/usr/include}"/>
+                                    								
+                                </option>
+                                							
+                            </tool>
+                            							
+                            <tool id="xilinx.gnu.arm.a53.linux.toolchain.archiver.456419161" name="ARM v8 Linux archiver" superClass="xilinx.gnu.arm.a53.linux.toolchain.archiver"/>
+                            							
+                            <tool id="xilinx.gnu.arm.a53.linux.c.toolchain.linker.debug.1741696101" name="ARM v8 Linux gcc linker" superClass="xilinx.gnu.arm.a53.linux.c.toolchain.linker.debug">
+                                								
+                                <option id="xilinx.gnu.linker.inferred.swplatform.flags.1291543731" name="Software Platform Inferred Flags" superClass="xilinx.gnu.linker.inferred.swplatform.flags" valueType="libs">
+                                    									
+                                    <listOptionValue builtIn="false" value="${resolvePlatformFile:project=pw-tool,fileType=sysrootFlag}"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${resolvePlatformFile:project=pw-tool,fileType=sysrootRlinkPath,append=/lib}"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${resolvePlatformFile:project=pw-tool,fileType=sysrootRlinkPath,append=/usr/lib}"/>
+                                    								
+                                </option>
+                                								
+                                <option id="xilinx.gnu.linker.inferred.swplatform.lpath.2143068412" name="Software Platform Library Path" superClass="xilinx.gnu.linker.inferred.swplatform.lpath" valueType="libPaths">
+                                    									
+                                    <listOptionValue builtIn="false" value="${resolvePlatformFile:project=pw-tool,fileType=sysrootPath,append=/lib}"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${resolvePlatformFile:project=pw-tool,fileType=sysrootPath,append=/usr/lib}"/>
+                                    								
+                                </option>
+                                								
+                                <option id="xilinx.gnu.c.link.option.libs.1509222400" superClass="xilinx.gnu.c.link.option.libs" useByScannerDiscovery="false" valueType="libs">
+                                    									
+                                    <listOptionValue builtIn="false" value="pthread"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="rt"/>
+                                    								
+                                </option>
+                                								
+                                <inputType id="xilinx.gnu.linker.input.246834441" superClass="xilinx.gnu.linker.input">
+                                    									
+                                    <additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
+                                    									
+                                    <additionalInput kind="additionalinput" paths="$(LIBS)"/>
+                                    								
+                                </inputType>
+                                								
+                                <inputType id="xilinx.gnu.linker.input.lscript.316626435" name="Linker Script" superClass="xilinx.gnu.linker.input.lscript"/>
+                                							
+                            </tool>
+                            							
+                            <tool id="xilinx.gnu.arm.a53.linux.cxx.toolchain.linker.debug.1156478786" name="ARM v8 Linux g++ linker" superClass="xilinx.gnu.arm.a53.linux.cxx.toolchain.linker.debug">
+                                								
+                                <option id="xilinx.gnu.linker.inferred.swplatform.flags.414164730" name="Software Platform Inferred Flags" superClass="xilinx.gnu.linker.inferred.swplatform.flags" valueType="libs">
+                                    									
+                                    <listOptionValue builtIn="false" value="${resolvePlatformFile:project=pw-tool,fileType=sysrootFlag}"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${resolvePlatformFile:project=pw-tool,fileType=sysrootRlinkPath,append=/lib}"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${resolvePlatformFile:project=pw-tool,fileType=sysrootRlinkPath,append=/usr/lib}"/>
+                                    								
+                                </option>
+                                								
+                                <option id="xilinx.gnu.linker.inferred.swplatform.lpath.1474422487" name="Software Platform Library Path" superClass="xilinx.gnu.linker.inferred.swplatform.lpath" valueType="libPaths">
+                                    									
+                                    <listOptionValue builtIn="false" value="${resolvePlatformFile:project=pw-tool,fileType=sysrootPath,append=/lib}"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${resolvePlatformFile:project=pw-tool,fileType=sysrootPath,append=/usr/lib}"/>
+                                    								
+                                </option>
+                                							
+                            </tool>
+                            							
+                            <tool id="xilinx.gnu.arm.a53.linux.size.debug.692295882" name="ARM v8 Linux Print Size" superClass="xilinx.gnu.arm.a53.linux.size.debug"/>
+                            						
+                        </toolChain>
+                        					
+                    </folderInfo>
+                    					
+                    <sourceEntries>
+                        						
+                        <entry excluding="_ide" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+                        					
+                    </sourceEntries>
+                    				
+                </configuration>
+                			
+            </storageModule>
+            			
+            <storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+            		
+        </cconfiguration>
+        		
+        <cconfiguration id="xilinx.gnu.arm.a53.linux.exe.release.1021609651">
+            			
+            <storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="xilinx.gnu.arm.a53.linux.exe.release.1021609651" moduleId="org.eclipse.cdt.core.settings" name="Release">
+                				
+                <externalSettings/>
+                				
+                <extensions>
+                    					
+                    <extension id="com.xilinx.sdk.managedbuilder.XELF.arm.a53.linux" point="org.eclipse.cdt.core.BinaryParser"/>
+                    					
+                    <extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+                    					
+                    <extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+                    					
+                    <extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+                    					
+                    <extension id="org.eclipse.cdt.core.CWDLocator" point="org.eclipse.cdt.core.ErrorParser"/>
+                    					
+                    <extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+                    				
+                </extensions>
+                			
+            </storageModule>
+            			
+            <storageModule moduleId="cdtBuildSystem" version="4.0.0">
+                				
+                <configuration artifactExtension="elf" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release" cleanCommand="rm -rf" description="" id="xilinx.gnu.arm.a53.linux.exe.release.1021609651" name="Release" parent="xilinx.gnu.arm.a53.linux.exe.release">
+                    					
+                    <folderInfo id="xilinx.gnu.arm.a53.linux.exe.release.1021609651." name="/" resourcePath="">
+                        						
+                        <toolChain id="xilinx.gnu.arm.a53.linux.exe.release.toolchain.2009264298" name="Xilinx ARM v8 GNU/Linux Toolchain" superClass="xilinx.gnu.arm.a53.linux.exe.release.toolchain">
+                            							
+                            <targetPlatform binaryParser="com.xilinx.sdk.managedbuilder.XELF.arm.a53.linux" id="xilinx.arm.a53.linux.target.gnu.base.release.1289009474" isAbstract="false" name="Release Platform" superClass="xilinx.arm.a53.linux.target.gnu.base.release"/>
+                            							
+                            <builder buildPath="${workspace_loc:/pw-tool}/Release" enableAutoBuild="true" id="xilinx.gnu.arm.a53.linux.toolchain.builder.release.895047651" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="GNU make" superClass="xilinx.gnu.arm.a53.linux.toolchain.builder.release"/>
+                            							
+                            <tool id="xilinx.gnu.arm.a53.linux.c.toolchain.assembler.release.2141574766" name="ARM v8 Linux gcc assembler" superClass="xilinx.gnu.arm.a53.linux.c.toolchain.assembler.release">
+                                								
+                                <inputType id="xilinx.gnu.assembler.input.805742408" superClass="xilinx.gnu.assembler.input"/>
+                                							
+                            </tool>
+                            							
+                            <tool id="xilinx.gnu.arm.a53.linux.c.toolchain.compiler.release.167496610" name="ARM v8 Linux gcc compiler" superClass="xilinx.gnu.arm.a53.linux.c.toolchain.compiler.release">
+                                								
+                                <option defaultValue="gnu.c.optimization.level.more" id="xilinx.gnu.compiler.option.optimization.level.1191150510" name="Optimization Level" superClass="xilinx.gnu.compiler.option.optimization.level" valueType="enumerated"/>
+                                								
+                                <option id="xilinx.gnu.compiler.option.debugging.level.1097569997" name="Debug Level" superClass="xilinx.gnu.compiler.option.debugging.level" useByScannerDiscovery="false" value="gnu.c.debugging.level.none" valueType="enumerated"/>
+                                								
+                                <option id="xilinx.gnu.compiler.inferred.swplatform.flags.1774130461" name="Software Platform Inferred Flags" superClass="xilinx.gnu.compiler.inferred.swplatform.flags" value="${resolvePlatformFile:project=pw-tool,fileType=sysrootFlag}" valueType="string"/>
+                                								
+                                <option id="xilinx.gnu.compiler.inferred.swplatform.includes.455547575" name="Software Platform Include Path" superClass="xilinx.gnu.compiler.inferred.swplatform.includes" valueType="includePath">
+                                    									
+                                    <listOptionValue builtIn="false" value="${resolvePlatformFile:project=pw-tool,fileType=sysrootPath,append=/usr/include}"/>
+                                    								
+                                </option>
+                                								
+                                <inputType id="xilinx.gnu.arm.a53.linux.c.compiler.input.1929721106" name="C source files" superClass="xilinx.gnu.arm.a53.linux.c.compiler.input"/>
+                                							
+                            </tool>
+                            							
+                            <tool id="xilinx.gnu.arm.a53.linux.cxx.toolchain.compiler.release.405322966" name="ARM v8 Linux g++ compiler" superClass="xilinx.gnu.arm.a53.linux.cxx.toolchain.compiler.release">
+                                								
+                                <option defaultValue="gnu.c.optimization.level.more" id="xilinx.gnu.compiler.option.optimization.level.619405846" name="Optimization Level" superClass="xilinx.gnu.compiler.option.optimization.level" valueType="enumerated"/>
+                                								
+                                <option id="xilinx.gnu.compiler.option.debugging.level.1102684730" name="Debug Level" superClass="xilinx.gnu.compiler.option.debugging.level" useByScannerDiscovery="false" value="gnu.c.debugging.level.none" valueType="enumerated"/>
+                                								
+                                <option id="xilinx.gnu.compiler.inferred.swplatform.flags.331259749" name="Software Platform Inferred Flags" superClass="xilinx.gnu.compiler.inferred.swplatform.flags" value="${resolvePlatformFile:project=pw-tool,fileType=sysrootFlag}" valueType="string"/>
+                                								
+                                <option id="xilinx.gnu.compiler.inferred.swplatform.includes.126271784" name="Software Platform Include Path" superClass="xilinx.gnu.compiler.inferred.swplatform.includes" valueType="includePath">
+                                    									
+                                    <listOptionValue builtIn="false" value="${resolvePlatformFile:project=pw-tool,fileType=sysrootPath,append=/usr/include}"/>
+                                    								
+                                </option>
+                                							
+                            </tool>
+                            							
+                            <tool id="xilinx.gnu.arm.a53.linux.toolchain.archiver.1660701166" name="ARM v8 Linux archiver" superClass="xilinx.gnu.arm.a53.linux.toolchain.archiver"/>
+                            							
+                            <tool id="xilinx.gnu.arm.a53.linux.c.toolchain.linker.release.580576344" name="ARM v8 Linux gcc linker" superClass="xilinx.gnu.arm.a53.linux.c.toolchain.linker.release">
+                                								
+                                <option id="xilinx.gnu.linker.inferred.swplatform.flags.521718066" name="Software Platform Inferred Flags" superClass="xilinx.gnu.linker.inferred.swplatform.flags" valueType="libs">
+                                    									
+                                    <listOptionValue builtIn="false" value="${resolvePlatformFile:project=pw-tool,fileType=sysrootFlag}"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${resolvePlatformFile:project=pw-tool,fileType=sysrootRlinkPath,append=/lib}"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${resolvePlatformFile:project=pw-tool,fileType=sysrootRlinkPath,append=/usr/lib}"/>
+                                    								
+                                </option>
+                                								
+                                <option id="xilinx.gnu.linker.inferred.swplatform.lpath.431705067" name="Software Platform Library Path" superClass="xilinx.gnu.linker.inferred.swplatform.lpath" valueType="libPaths">
+                                    									
+                                    <listOptionValue builtIn="false" value="${resolvePlatformFile:project=pw-tool,fileType=sysrootPath,append=/lib}"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${resolvePlatformFile:project=pw-tool,fileType=sysrootPath,append=/usr/lib}"/>
+                                    								
+                                </option>
+                                								
+                                <inputType id="xilinx.gnu.linker.input.142698368" superClass="xilinx.gnu.linker.input">
+                                    									
+                                    <additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
+                                    									
+                                    <additionalInput kind="additionalinput" paths="$(LIBS)"/>
+                                    								
+                                </inputType>
+                                								
+                                <inputType id="xilinx.gnu.linker.input.lscript.1250367087" name="Linker Script" superClass="xilinx.gnu.linker.input.lscript"/>
+                                							
+                            </tool>
+                            							
+                            <tool id="xilinx.gnu.arm.a53.linux.cxx.toolchain.linker.release.1906181120" name="ARM v8 Linux g++ linker" superClass="xilinx.gnu.arm.a53.linux.cxx.toolchain.linker.release">
+                                								
+                                <option id="xilinx.gnu.linker.inferred.swplatform.flags.1037994992" name="Software Platform Inferred Flags" superClass="xilinx.gnu.linker.inferred.swplatform.flags" valueType="libs">
+                                    									
+                                    <listOptionValue builtIn="false" value="${resolvePlatformFile:project=pw-tool,fileType=sysrootFlag}"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${resolvePlatformFile:project=pw-tool,fileType=sysrootRlinkPath,append=/lib}"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${resolvePlatformFile:project=pw-tool,fileType=sysrootRlinkPath,append=/usr/lib}"/>
+                                    								
+                                </option>
+                                								
+                                <option id="xilinx.gnu.linker.inferred.swplatform.lpath.273274190" name="Software Platform Library Path" superClass="xilinx.gnu.linker.inferred.swplatform.lpath" valueType="libPaths">
+                                    									
+                                    <listOptionValue builtIn="false" value="${resolvePlatformFile:project=pw-tool,fileType=sysrootPath,append=/lib}"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${resolvePlatformFile:project=pw-tool,fileType=sysrootPath,append=/usr/lib}"/>
+                                    								
+                                </option>
+                                							
+                            </tool>
+                            							
+                            <tool id="xilinx.gnu.arm.a53.linux.size.release.1183340045" name="ARM v8 Linux Print Size" superClass="xilinx.gnu.arm.a53.linux.size.release"/>
+                            						
+                        </toolChain>
+                        					
+                    </folderInfo>
+                    					
+                    <sourceEntries>
+                        						
+                        <entry excluding="_ide" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+                        					
+                    </sourceEntries>
+                    				
+                </configuration>
+                			
+            </storageModule>
+            			
+            <storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+            		
+        </cconfiguration>
+        	
+    </storageModule>
+    	
+    <storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
+    	
+    <storageModule moduleId="cdtBuildSystem" version="4.0.0">
+        		
+        <project id="pw-tool.xilinx.gnu.arm.a53.linux.exe.185860970" name="Xilinx ARM v8 Linux Executable" projectType="xilinx.gnu.arm.a53.linux.exe"/>
+        	
+    </storageModule>
+    	
+    <storageModule moduleId="scannerConfiguration">
+        		
+        <autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+        		
+        <scannerConfigBuildInfo instanceId="xilinx.gnu.arm.a53.linux.exe.release.1021609651;xilinx.gnu.arm.a53.linux.exe.release.1021609651.">
+            			
+            <autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.xilinx.managedbuilder.ui.ARMA53LinuxGCCManagedMakePerProjectProfileC"/>
+            		
+        </scannerConfigBuildInfo>
+        		
+        <scannerConfigBuildInfo instanceId="xilinx.gnu.arm.a53.linux.exe.release.1021609651;xilinx.gnu.arm.a53.linux.exe.release.1021609651.;xilinx.gnu.arm.a53.linux.c.toolchain.compiler.release.167496610;xilinx.gnu.arm.a53.linux.c.compiler.input.1929721106">
+            			
+            <autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.xilinx.managedbuilder.ui.ARMA53LinuxGCCManagedMakePerProjectProfileC"/>
+            		
+        </scannerConfigBuildInfo>
+        		
+        <scannerConfigBuildInfo instanceId="xilinx.gnu.arm.a53.linux.exe.debug.200444177;xilinx.gnu.arm.a53.linux.exe.debug.200444177.">
+            			
+            <autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.xilinx.managedbuilder.ui.ARMA53LinuxGCCManagedMakePerProjectProfileC"/>
+            		
+        </scannerConfigBuildInfo>
+        		
+        <scannerConfigBuildInfo instanceId="xilinx.gnu.arm.a53.linux.exe.debug.200444177;xilinx.gnu.arm.a53.linux.exe.debug.200444177.;xilinx.gnu.arm.a53.linux.c.toolchain.compiler.debug.1281501567;xilinx.gnu.arm.a53.linux.c.compiler.input.1882864328">
+            			
+            <autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.xilinx.managedbuilder.ui.ARMA53LinuxGCCManagedMakePerProjectProfileC"/>
+            		
+        </scannerConfigBuildInfo>
+        	
+    </storageModule>
+    	
+    <storageModule moduleId="refreshScope"/>
+    
+</cproject>

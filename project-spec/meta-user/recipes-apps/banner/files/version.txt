@@ -1,0 +1,8 @@
+/* PW version info file */
+/* version.txt */
+
+git_branch = "private/rblaut/first";
+git_commit = "8e573f30884cf5e80698a29322f119e936e4a0ac";
+git_tag = "test";
+git commit_date = "2021-10-17 10:35:53 +0300";
+build_date = "2021-11-07T05:34:01+0000";

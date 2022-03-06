@@ -1,0 +1,70 @@
+function table2string(data)
+
+    local i = 1;
+    local txt = "";
+    while (data[i] ~= nil) do
+	if (data [i] ~= 10 and data [i] ~= 13) then
+	    txt = txt..string.char(data[i]);
+	    --txt = txt.." "..(data[i]);
+	end;
+	i = i +1;
+    end;
+
+    return txt;
+end;
+
+function is_ctrl_c(data)
+
+    -- 255 244 255 253 6
+
+    if (data[1] == 255 and data [2] == 244 and data[3] == 255 and data[4] == 253 and data[5] == 6) then
+	return 1;
+    end;
+
+    -- 255 251 6
+    if (data[1]==255 and data[2]==251 and data[3]==6) then
+	return 1;
+    end;
+
+    return 0;
+end;
+
+function main()
+    h, l = get_cliver();
+
+    print("Lua CLI version:"..string.format("%d.%02d",h, l));
+
+    local server = socket();
+    local res = bind(server, "0.0.0.0", 10000);
+    local client = accept(server);
+
+    send(client, "-----------------------------------------\n");
+    send(client, "Hello from my CLI-LUA telnet server\n");
+    send(client, "-----------------------------------------\n");
+    send(client, "cmd>");
+    while 1 do
+	res, data = recv(client);
+
+	if (res > 0) then
+	    if (is_ctrl_c(data) == 1) then
+		print("CTRL+C");
+		break;
+	    else
+	        -- print (table2string(data));
+		r, msg = cli(table2string(data));
+	    end;
+
+	    res = send(client, msg);
+	    if (res < 0) then
+		break;
+	    end;
+	    send(client, "cmd>");
+	else
+	    print("Error to receive the data from socket, res:"..res);
+	    break;
+	end;
+    end;
+
+    close(client);
+    close(server);
+end;

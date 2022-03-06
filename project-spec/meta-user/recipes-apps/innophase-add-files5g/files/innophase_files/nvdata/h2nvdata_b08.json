@@ -1,0 +1,28 @@
+{
+	"body": {
+		"load_param_req": {
+			"inventory:2": {
+				"product_id": "h2ha0_2t2r_b40",
+				"serial_number": "h2ha0_reva1_bd08",
+				"hw_version": "reva1"
+			},
+			"register:0": {
+				"cm_ibias_adj": 1,
+				"tx_config_cntrl": 4608,
+				"cm_ref_vset": 10,
+				"sys.vco_coarse_code": 106,
+				"sx.vco_coarse_code": 137,
+				"rx_pi_slew_rate": 4,
+				"rx_eq_res": 0,
+				"rx_eq_cap": 0,
+				"rx_cdr_lin_gain": 31,
+				"tx.chain": 1,
+				"tx.vset": 0,
+				"tx.gctrl": 8
+			},
+			"register:1": {
+				"0x80800030": 5120
+			}
+		}
+	}
+}

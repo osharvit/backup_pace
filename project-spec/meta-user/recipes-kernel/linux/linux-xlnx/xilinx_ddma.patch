@@ -1,0 +1,98 @@
+diff --git a/drivers/dma/xilinx/xilinx_dma.c b/drivers/dma/xilinx/xilinx_dma.c
+index 09cc1e9914cd..4f5f91753d18 100644
+--- a/drivers/dma/xilinx/xilinx_dma.c
++++ b/drivers/dma/xilinx/xilinx_dma.c
+@@ -134,6 +134,9 @@
+ 		 XILINX_DMA_DMASR_DLY_CNT_IRQ | \
+ 		 XILINX_DMA_DMASR_ERR_IRQ)
+ 
++#define XILINX_DMA_DMAXR_IRQ_MASK	\
++		 (XILINX_DMA_DMASR_DLY_CNT_IRQ | \
++		 XILINX_DMA_DMASR_ERR_IRQ)
+ #define XILINX_DMA_DMASR_ALL_ERR_MASK	\
+ 		(XILINX_DMA_DMASR_EOL_LATE_ERR | \
+ 		 XILINX_DMA_DMASR_SOF_LATE_ERR | \
+@@ -520,6 +523,8 @@ struct xilinx_dma_device {
+ 	readl_poll_timeout_atomic(chan->xdev->regs + chan->ctrl_offset + reg, \
+ 				  val, cond, delay_us, timeout_us)
+ 
++/* default interrupt mask includes IOC (bit 12) */
++static u32 INTERRUPT_MASK = XILINX_DMA_DMAXR_ALL_IRQ_MASK;
+ /* IO accessors */
+ static inline u32 dma_read(struct xilinx_dma_chan *chan, u32 reg)
+ {
+@@ -1181,7 +1186,7 @@ static int xilinx_dma_alloc_chan_resources(struct dma_chan *dchan)
+ 		 * other channel as well so enable the interrupts here.
+ 		 */
+ 		dma_ctrl_set(chan, XILINX_DMA_REG_DMACR,
+-			      XILINX_DMA_DMAXR_ALL_IRQ_MASK);
++			      INTERRUPT_MASK);
+ 	}
+ 
+ 	if ((chan->xdev->dma_config->dmatype == XDMA_TYPE_CDMA) && chan->has_sg)
+@@ -1518,7 +1523,8 @@ static void xilinx_dma_start_transfer(struct xilinx_dma_chan *chan)
+ 				       struct xilinx_axidma_tx_segment, node);
+ 
+ 	reg = dma_ctrl_read(chan, XILINX_DMA_REG_DMACR);
+-
++	if (!chan->cyclic)
++		reg |= XILINX_DMA_DMACR_FRM_CNT_IRQ;
+ 	if (chan->desc_pendingcount <= XILINX_DMA_COALESCE_MAX) {
+ 		reg &= ~XILINX_DMA_CR_COALESCE_MAX;
+ 		reg |= chan->desc_pendingcount <<
+@@ -1728,7 +1734,7 @@ static int xilinx_dma_chan_reset(struct xilinx_dma_chan *chan)
+ 
+ 	/* Enable interrupts */
+ 	dma_ctrl_set(chan, XILINX_DMA_REG_DMACR,
+-		      XILINX_DMA_DMAXR_ALL_IRQ_MASK);
++		      INTERRUPT_MASK);
+ 
+ 	return 0;
+ }
+@@ -1815,11 +1821,11 @@ static irqreturn_t xilinx_dma_irq_handler(int irq, void *data)
+ 
+ 	/* Read the status and ack the interrupts. */
+ 	status = dma_ctrl_read(chan, XILINX_DMA_REG_DMASR);
+-	if (!(status & XILINX_DMA_DMAXR_ALL_IRQ_MASK))
++	if (!(status & INTERRUPT_MASK))
+ 		return IRQ_NONE;
+ 
+ 	dma_ctrl_write(chan, XILINX_DMA_REG_DMASR,
+-			status & XILINX_DMA_DMAXR_ALL_IRQ_MASK);
++			status & INTERRUPT_MASK);
+ 
+ 	if (status & XILINX_DMA_DMASR_ERR_IRQ) {
+ 		/*
+@@ -2133,6 +2139,7 @@ static struct dma_async_tx_descriptor *xilinx_dma_prep_slave_sg(
+ 	size_t sg_used;
+ 	unsigned int i;
+ 
++	INTERRUPT_MASK = XILINX_DMA_DMAXR_ALL_IRQ_MASK;
+ 	if (!is_slave_direction(direction))
+ 		return NULL;
+ 
+@@ -2231,6 +2238,7 @@ static struct dma_async_tx_descriptor *xilinx_dma_prep_dma_cyclic(
+ 	int i;
+ 	u32 reg;
+ 
++	INTERRUPT_MASK = XILINX_DMA_DMAXR_IRQ_MASK;
+ 	if (!period_len)
+ 		return NULL;
+ 
+@@ -2293,6 +2301,7 @@ static struct dma_async_tx_descriptor *xilinx_dma_prep_dma_cyclic(
+ 
+ 	desc->cyclic = true;
+ 	reg = dma_ctrl_read(chan, XILINX_DMA_REG_DMACR);
++	reg &= ~XILINX_DMA_DMASR_FRM_CNT_IRQ;
+ 	reg |= XILINX_DMA_CR_CYCLIC_BD_EN_MASK;
+ 	dma_ctrl_write(chan, XILINX_DMA_REG_DMACR, reg);
+ 
+@@ -2536,7 +2545,7 @@ static void xilinx_dma_chan_remove(struct xilinx_dma_chan *chan)
+ {
+ 	/* Disable all interrupts */
+ 	dma_ctrl_clr(chan, XILINX_DMA_REG_DMACR,
+-		      XILINX_DMA_DMAXR_ALL_IRQ_MASK);
++		      INTERRUPT_MASK);
+ 
+ 	if (chan->irq > 0)
+ 		free_irq(chan->irq, chan);

@@ -1,0 +1,4 @@
+#!/bin/sh
+
+source ./gselect.sh
+source ./hermes2_startup.sh

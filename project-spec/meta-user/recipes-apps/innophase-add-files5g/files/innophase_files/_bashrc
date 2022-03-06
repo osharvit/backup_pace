@@ -1,0 +1,5 @@
+PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin"
+PATH="/home/root/bin:${PATH}"
+PATH="/home/root:${PATH}"
+export PATH
+alias ll='ls -lF'

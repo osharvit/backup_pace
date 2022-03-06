@@ -1,0 +1,434 @@
+-- Script to test UP Sampler
+-- Listening port
+PORT=7777;
+General_Header_length=24;
+USER_NUM = 5;
+-- For IP reset
+XLLF_SRR_RESET_MASK = 0x000000a5;
+XLLF_TDFR_RESET_MASK = 0x000000a5;
+XLLF_RDFR_RESET_MASK = 0x000000a5;
+XLLF_INT_ALL_MASK = 0xfff80000;
+XLLF_IER_MASK = (0x08000000 | 0x04000000 | 0x02000000 | 0x80000000 | 0x40000000 | 0x20000000 | 0x10000000)
+ 
+function byte2int(in_table, num)
+
+    out_table = {};
+
+    i = 1;
+    for j=1, (num/4) do
+        out_table[j] = (in_table[i+3]<<24) | (in_table[i+2]<<16) | (in_table[i+1]<<8) | in_table[i]
+        i = i+4;
+    end;
+
+    return out_table;
+end;
+
+function byte2u64(in_table, num)
+
+    out_table = {};
+
+    i = 1;
+    for j=1, (num/8) do
+        out_table[j] = (in_table[i+7]<<56) | (in_table[i+6]<<48) | (in_table[i+5]<<40) | (in_table[i+4]<<32) | (in_table[i+3]<<24) | (in_table[i+2]<<16) | (in_table[i+1]<<8) | in_table[i]
+        i = i+8;
+    end;
+
+    return out_table;
+end;
+
+function bytes_to_ushort(b1, b2)
+  len = b1 * 256 + b2
+  return len
+end
+
+function ushort_to_bytes(ushort_value)
+  buffer = {} 
+  buffer[1] = ushort_value/256
+  buffer[2] = ushort_value%256
+  return buffer
+end;
+
+function bytes_to_int(b1, b2, b3, b4)
+  if not b4 then error("need four bytes to convert to int",2) end
+  local n = b1*16777216 + b2*65536 + b3*256 + b4
+  n = (n > 2147483647) and (n - 4294967296) or n
+  return n
+end
+
+function int2byte(in_table, num)
+
+    out_table = {};
+
+    j = 1;
+    for i=1, (num) do
+        out_table[j] = (in_table[i]>>24) & 0xFF
+        j = j+1
+        out_table[j] = (in_table[i]>>16) & 0xFF
+        j = j +1
+        out_table[j] = (in_table[i]>>8) & 0xFF
+        j = j+1
+        out_table[j] = (in_table[i]) & 0xFF
+        j = j+1;
+    end;
+
+    return out_table;
+end;
+
+function is_up_sampler(header)
+    ifft = bytes_to_ushort(header[14], header[13])
+    if (ifft == 12) then
+      return 1
+    else
+      return 0
+    end;
+end;
+
+function get_nfft_from_header(ifft_header)
+    print("nfft: ifft_header[2]= "..ifft_header[2].."; ifft_header[1] = "..ifft_header[1]);
+    return bytes_to_ushort(ifft_header[2], ifft_header[1])
+end;
+
+function get_lastSym(up_header)
+   return up_header[3]
+end;
+
+function get_nfft(size_nFFT)
+    print("size_nFFT= "..size_nFFT);
+    hw_nfft = -1;
+    if (size_nFFT == 0x1000) then
+    	hw_nfft = 0xC
+    elseif (size_nFFT == 0x800) then
+	hw_nfft = 0xb
+    elseif (size_nFFT == 0x400) then
+        hw_nfft = 0xa
+    elseif (size_nFFT == 0x200) then
+        hw_nfft = 0x9
+    else
+	print( "Invalid nFFT size: "..size_nFFT.."");
+    end;
+    print("hw_nfft= ", hw_nfft);
+    return hw_nfft
+end;
+    	
+function set_dir_to_matlab(header)
+    header[11] = 1
+    header[12] = 0
+end;
+
+function set_symbol_number(header, num)
+    header[8] = 0xFF & (num >> 8)
+    header[7] = 0xFF & num
+end;
+
+function set_vector_length(header, length)
+    header[4] = (length >> 24) &0xFF
+    header[3] = (length >> 16) &0xFF
+    header[2] = (length >> 8) &0xFF
+    header[1] = length &0xFF
+end;
+
+function write_hw_data(data, data_len)
+    print ("Write AXIS-fifo data");
+    print("Writing "..data_len.." bytes as 64-bit samples into FIFO")
+    err = writedata(64, "fifo", data);
+    return err
+end;
+
+function read_hw_data()
+    outval = {};
+    u64_len = 70000;
+    print("Reading "..u64_len.." 64-bit samples from FIFO")
+    err, outval = readdata(64, "fifo", u64_len);
+    return err, outval;
+end;
+
+function get_slot_number(gen_header)
+    return bytes_to_ushort(gen_header[6], gen_header[5])
+end;
+
+function get_layer_number(gen_header)
+    return bytes_to_ushort(gen_header[10], gen_header[9])
+end;
+
+function get_symbol_number(gen_header)
+    return bytes_to_ushort(gen_header[8], gen_header[7])
+end;
+    
+function get_num_SCS(ifft_header)
+    return bytes_to_ushort(ifft_header[6], ifft_header[5])
+end;
+
+function get_CpLen(ifft_header)
+    return bytes_to_ushort(ifft_header[10], ifft_header[9])
+end;
+
+function get_max_num_SCS(ifft_header)
+   return bytes_to_ushort(ifft_header[8], ifft_header[7])
+end;
+
+
+-- Returns symbol number
+function read_gen_header(gen_header)
+    slot_number = get_slot_number(gen_header);
+    print("Slot number:      "..slot_number);
+    symb_number = get_symbol_number(gen_header)
+    print("Symbol number:    "..symb_number);
+    layer_number = get_layer_number(gen_header);
+    print("Layer number:     "..layer_number);
+    return symb_number, slot_number;
+end;
+
+function reset_up_sampler()
+    regset(32, "upsampler.reset", 0);
+-- here goes ip reset
+    regset(32, "upsampler.XLLF_SRR_OFFSET", XLLF_SRR_RESET_MASK);
+    regset(32, "upsampler.XLLF_TDFR_OFFSET", XLLF_TDFR_RESET_MASK);
+    regset(32, "upsampler.XLLF_RDFR_OFFSET", XLLF_RDFR_RESET_MASK);
+    regset(32, "upsampler.XLLF_IER_OFFSET", XLLF_IER_MASK);
+    regset(32, "upsampler.XLLF_ISR_OFFSET", XLLF_INT_ALL_MASK);
+--end of IP reset
+    regset(32, "upsampler.reset", 1);
+    regset(32, "upsampler.fifo_reset", 1);
+    cli( "sleep 600");
+end;
+
+function check_tuser_number(data_from_fifo)
+    --for i = 1, 8, 1
+    --do
+    --  print("fifo["..i.."] = "..data_from_fifo[i])
+    --end
+    if (data_from_fifo[1] ~= USER_NUM ) then
+      print("USER num "..data_from_fifo[1].." is NOT equal to "..USER_NUM);
+    else
+      print("USER num matched; symbol number is: "..data_from_fifo[6])
+    end
+end;
+
+function prepare_tuser_number(symb_num, samples, samples_len, slot_number, lastSym)
+    tuser_bytes = {};
+    for i = 1, 8, 1
+    do
+      tuser_bytes[i] = 0;
+    end
+ --bits 27 down to 24  
+    tuser_bytes[6] = (symb_num & 0x0F);
+    tuser_bytes[1] = USER_NUM;
+ --bits  32 slot number
+    tuser_bytes[7] = (slot_number & 0x01)
+ -- set bit 60 to 1 upon lastSytm = 2
+    if (lastSym == 2) then
+      tuser_bytes[8] = 0x10
+    end
+-- copy input samples after TUSER data
+    for i = 1,  samples_len, 1
+    do
+      tuser_bytes[i + 8] = samples[i];
+    end;
+    return tuser_bytes;
+end;
+
+function receive(client, size)
+  received_buffer = {}
+  n = 0
+  idle = 0
+  bytes = size;
+  received = 0;
+  while received < size do
+    res, data = recv(client, bytes);
+    if (res < 0) then
+      print("Error received "..res);
+      received = res;
+      break;
+    end
+    if (res > 0) then
+      print("Received "..res.." bytes")
+      for _,v in ipairs(data) do n=n+1; received_buffer[n]=v end
+      received = received + res;
+      bytes = bytes - res;
+    end
+    if (res == 0) then
+      print("Received 0 "..idle);
+      idle = idle +1
+      if (idle > 2) then
+        break;
+      end
+      cli( "sleep 600");
+    end
+  end;
+  return received, received_buffer
+end;
+
+function main()
+    h, l = get_cliver();
+    previous_symbol_number = 0
+    previous_lastSym = 2
+    print("Lua CLI version:"..string.format("%d.%02d",h, l));
+    print("=========     UP Sampler     ==========")
+    reset_up_sampler();
+    local server = socket();
+    local res = bind(server, "0.0.0.0", PORT);
+::accept::    local client = accept(server);
+    while 1 do
+::loop:: 
+-- Receive General header of General_Header_length bytes
+      res, header = receive(client, General_Header_length);
+
+      if (res > 0) then
+        print(header[1], header[2], header[3], header[4])
+        if (is_up_sampler(header) == 1) then
+	  print("Received General Header with UP Sampler");
+        else
+	  print("Received unknown header")
+	  goto loop
+        end;
+-- Calculate the whole vector size
+        total_size = bytes_to_int(header[4], header[3], header[2], header[1])
+        print("total vector size to receive: "..total_size.." bytes")
+-- Receive length of next header (UP sampler header)
+        res, ifft_len = receive(client, 4);
+        if (res > 0) then
+          print("Received up sampler header length:")
+          print(ifft_len[1], ifft_len[2], ifft_len[3], ifft_len[4])
+        else
+          print("Failed to receive up sampler header length, exiting")
+          break;
+        end;
+-- Calculate Up sampler header length
+        header_length = bytes_to_int(ifft_len[4], ifft_len[3], ifft_len[2], ifft_len[1])
+        res, ups_header = receive(client, header_length -4);
+        if (res > 0) then
+	  print("Received Up sampler header of "..header_length.." bytes length");
+        else
+          print("Failed to receive header, exiting")
+          break;
+        end;
+--Read general header
+        symbol_number, slot_num = read_gen_header(header);
+        lastSym = get_lastSym(ups_header);
+        print("Received lastSym = "..lastSym);
+	if ((lastSym == 1) and (previous_lastSym ~= 2)) then
+          print("Received lastSym = "..lastSym.."  after previous symbol = "..previous_symbol_number.." ; doing RESET");
+	  reset_up_sampler();
+        end;
+        
+        data_size = total_size - General_Header_length - header_length;
+        print("Data samples to receive: "..data_size.." bytes")
+        res, data = receive(client, data_size);
+        if (res > 0) then
+          print("Received data: "..res.." bytes")
+        else
+          print("Failed to receive data, exiting")
+          break;
+        end;
+        tuser_samples = prepare_tuser_number(symbol_number, data, res, slot_num, lastSym);
+        
+-- Write data samples to axis-fifo
+        res  = write_hw_data(tuser_samples, res + 8);
+        if (res < 0) then
+          print("Error writing samples to fifo: "..res);
+        end;
+        cli( "sleep 600");
+-- Read samples from axis-fifo
+        data_size, hw_data = read_hw_data()
+        if (data_size < 0) then
+          print("Error reading samples from fifo: "..data_size);
+          data_size = 0;
+        else
+	  print("Read "..data_size.." bytes from FIFO")
+	  check_tuser_number(hw_data);
+        end;
+----- FOR TEST
+---        if (symbol_number == 0) then
+---          data_size = 0;
+---        end;
+        if ((data_size == 0) and (symbol_number ~= 0)) then
+          print("No data to read from fifo , previous_symbol_number = "..previous_symbol_number);
+        end;
+-- Update prev symbol number
+        previous_lastSym = lastSym;
+        if (data_size == 0) then
+	  goto loop
+        end
+        output_header = header;
+	set_dir_to_matlab(output_header)
+-- Calculate output vector length
+        out_total_len = General_Header_length + data_size -8
+        set_vector_length(output_header, out_total_len)
+        set_symbol_number(output_header, previous_symbol_number)
+        print("Set symbol number ["..previous_symbol_number.."] to output header")
+	previous_symbol_number = symbol_number;
+--send data back
+-- concatenate header and data in one buffer
+-- remove first 8 bytes from FIFO data
+        for i = 1, 8, 1
+        do
+          table.remove(hw_data, i)
+        end;
+        output_buffer = {}
+        n = 0
+        for _,v in ipairs(output_header) do n=n+1; output_buffer[n]=v end
+        for _,v in ipairs(hw_data) do n=n+1; output_buffer[n]=v end
+        res = send(client, output_buffer);
+        print("Sent back: "..res.." bytes");
+        if (res < 0) then
+          print("Error to send the data_size, res:"..res);
+          break;
+        end;
+--        if (data_size > 0) then
+--          res = send(client, hw_data);
+--          print("Sent back: "..res.." bytes");
+--          if (res < 0) then
+--            print("Error to send the data, res:"..res);
+--            break;
+--          end;
+--	end;
+        if (lastSym == 2) then
+          -- Need to read FIFO once more time
+          cli(" sleep 300")
+          data_size, last_hw_data = read_hw_data()
+          if (data_size < 0) then
+            print("Error reading samples from fifo: "..data_size);
+            data_size = 0;
+          else
+            print("Read "..data_size.." bytes from FIFO for Last Symbol")
+            check_tuser_number(last_hw_data);
+          end;
+          if ((data_size == 0) and (symbol_number ~= 0)) then
+            print("No data to read from fifo , previous_symbol_number = "..previous_symbol_number);
+            goto loop
+          end;
+-- Calculate last output vector length
+          out_total_len = General_Header_length + data_size -8
+          set_vector_length(output_header, out_total_len)
+          set_symbol_number(output_header, previous_symbol_number +1)
+          print("Set symbol number"..(previous_symbol_number +1).." to LAST output header")          
+          output_last_buffer = {}
+          n = 0
+-- remove first 8 bytes from LAST FIFO data
+          for i = 1, 8, 1
+          do
+            table.remove(last_hw_data, i)
+          end;
+
+          for _,v in ipairs(output_header) do n=n+1; output_last_buffer[n]=v end
+          for _,v in ipairs(last_hw_data) do n=n+1; output_last_buffer[n]=v end
+          res = send(client, output_last_buffer);
+          print("Sent back: "..res.." bytes");
+          if (res < 0) then
+            print("Error to send the data_size, res:"..res);
+            break;
+          end;
+        end;  
+      else
+        print("Error to receive the data from socket, res:"..res);
+        break;
+      end;
+    end;
+    close(client);
+    print("client closed")
+    if (res == 0) then
+      print("Going to accept")
+      goto accept
+    end
+    close(server);
+end;

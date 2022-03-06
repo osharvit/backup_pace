@@ -1,0 +1,29 @@
+-- Read content of register (1 byte)  on i2c device;
+-- Usage: i2cread_reg <i2c bus number> <i2c mux addr> <mux output> <i2c device addr> <register> e.g.> i2cread_reg 0 0x71 0x02 0x74 0x02
+
+function help()
+  print("Version 0.1")
+  print("Read content of register (1 byte)  on i2c device")
+  print("Required I2C tools installed on board")
+  print("Usage: i2cread_reg <i2c bus number> <i2c mux addr> <mux output> <i2c device addr> <register>")
+  print("E.g. >i2cread_reg 0 0x71 0x02 0x74 0x02")
+end
+
+function main(i2c_bus, i2c_mux_addr, mux_out_bus_addr, i2c_clk_gen_addr, reg)
+        if (i2c_bus == nil) or (i2c_bus == "-h") or (i2c_bus == "--help") then
+          help()                                                                                                 
+          return                                                                                                                                           
+        end
+        local set_mux = "i2cset -y -f "..i2c_bus.." "..i2c_mux_addr.." "..mux_out_bus_addr
+        local res = os.execute(set_mux);
+        if res == false then
+          print("Failed to configure mux "..i2c_mux_addr.." to output "..mux_out_bus_addr)
+          return
+        end
+        get_reg = "i2cget -y -f "..i2c_bus.." "..i2c_clk_gen_addr.." "..reg
+        res = os.execute(get_reg);
+        if res == false then
+          print("Failed to read "..i2c_clk_gen_addr.." register "..reg)
+          return
+        end
+end;

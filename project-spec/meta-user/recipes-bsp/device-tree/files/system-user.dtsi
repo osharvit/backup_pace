@@ -1,0 +1,428 @@
+#include "pinctrl-zynqmp.h"
+#include "phy.h"
+#include "gpio.h"
+/include/ "system-conf.dtsi"
+/ {
+/*
+  	chosen {
+		bootargs = " earlycon console=ttyPS0,115200 debug clk_ignore_unused root=/dev/mtd3 rootfstype=jffs2 rw rootwait";
+		stdout-path = "serial0:115200n8";
+	};
+*/
+/*
+	  reserved-memory {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		ranges;
+
+		reserved: buffer@0 {
+		  no-map;
+		reg = <0x00000000 0x6f000000 0x0 0x10000000>;
+				  
+		};
+	};
+	  reserved-driver@0 {
+	      compatible = "xlnx,reserved-memory";
+	      memory-region = <&reserved>;
+	  };
+		
+*/
+/* 48MHz reference crystal */
+ref48: ref48M {
+        compatible = "fixed-clock";
+        #clock-cells = <0>;
+        clock-frequency = <48000000>;
+};
+};
+
+
+
+&cpu_opp_table {
+		opp03 {
+			opp-hz = /bits/ 64 <1333333320>;
+			opp-microvolt = <1000000>;
+			clock-latency-ns = <500000>;
+		};
+};
+
+/*
+&gem3 {
+        phy-handle = <&phyc>;
+        pinctrl-names = "default";
+        pinctrl-0 = <&pinctrl_gem3_default>;
+	phyc: ethernet-phy@0 {
+	  reg = <0>;
+	    tx-fifo-depth = <DP83867_PHYCR_FIFO_DEPTH_4_B_NIB>;
+	    rx-fifo-depth = <DP83867_PHYCR_FIFO_DEPTH_4_B_NIB>;
+	    ti,max-output-impedance;
+	    ti,clk-output-sel = <DP83867_CLK_O_SEL_CHN_A_RCLK>;
+	    ti,rx-internal-delay = <DP83867_RGMIIDCTL_2_25_NS>;
+	    ti,tx-internal-delay = <DP83867_RGMIIDCTL_2_75_NS>;
+	  };
+  
+};
+*/
+
+/*
+&gem3 {
+	status = "okay";
+        phy-handle = <&phy0>;
+	phy-mode = "rgmii-id";
+        pinctrl-names = "default";
+        pinctrl-0 = <&pinctrl_gem3_default>;
+        phy0: ethernet-phy@0 {
+                reg = <0x0>;
+                ti,rx-internal-delay = <0x8>;
+                ti,tx-internal-delay = <0xa>;
+                ti,fifo-depth = <0x1>;
+		ti,rxctrl-strap-worka;
+                ti,dp83867-rxctrl-strap-quirk;
+        };
+};
+*/
+
+
+
+
+
+&gem3 {
+        phy-handle = <&phyc>;
+        pinctrl-names = "default";
+        pinctrl-0 = <&pinctrl_gem3_default>;
+        phyc: ethernet-phy@0 {
+                reg = <0x0>;
+                ti,rx-internal-delay = <0x8>;
+                ti,tx-internal-delay = <0xa>;
+                ti,fifo-depth = <0x1>;
+                ti,dp83867-rxctrl-strap-quirk;
+        };
+};
+
+
+&pinctrl0 {
+	status = "okay";
+
+
+
+	pinctrl_gem3_default: gem3-default {
+		mux {
+			function = "ethernet3";
+			groups = "ethernet3_0_grp";
+		};
+
+		conf {
+			groups = "ethernet3_0_grp";
+			slew-rate = <SLEW_RATE_SLOW>;
+			io-standard = <IO_STANDARD_LVCMOS33>;
+		};
+
+		conf-rx {
+			pins = "MIO70", "MIO71", "MIO72", "MIO73", "MIO74",
+									"MIO75";
+			bias-high-impedance;
+			low-power-disable;
+		};
+
+		conf-tx {
+			pins = "MIO64", "MIO65", "MIO66", "MIO67", "MIO68",
+									"MIO69";
+			bias-disable;
+			low-power-enable;
+		};
+
+		mux-mdio {
+			function = "mdio3";
+			groups = "mdio3_0_grp";
+		};
+
+		conf-mdio {
+			groups = "mdio3_0_grp";
+			slew-rate = <SLEW_RATE_SLOW>;
+			io-standard = <IO_STANDARD_LVCMOS33>;
+			bias-disable;
+		};
+	};
+	pinctrl_sdhci1_default: sdhci1-default {
+		mux {
+			groups = "sdio1_0_grp";
+			function = "sdio1";
+		};
+
+		conf {
+			groups = "sdio1_0_grp";
+			slew-rate = <SLEW_RATE_SLOW>;
+			io-standard = <IO_STANDARD_LVCMOS18>;
+			bias-disable;
+		};
+
+		mux-cd {
+			groups = "sdio1_cd_0_grp";
+			function = "sdio1_cd";
+		};
+
+		conf-cd {
+			groups = "sdio1_cd_0_grp";
+			bias-high-impedance;
+			bias-pull-up;
+			slew-rate = <SLEW_RATE_SLOW>;
+			io-standard = <IO_STANDARD_LVCMOS18>;
+		};
+
+		mux-wp {
+			groups = "sdio1_wp_0_grp";
+			function = "sdio1_wp";
+		};
+
+		conf-wp {
+			groups = "sdio1_wp_0_grp";
+			bias-high-impedance;
+			bias-pull-up;
+			slew-rate = <SLEW_RATE_SLOW>;
+			io-standard = <IO_STANDARD_LVCMOS18>;
+		};
+	};
+	pinctrl_i2c0_default: i2c0-default {
+		mux {
+			groups = "i2c0_13_grp";
+			function = "i2c0";
+		};
+
+		conf {
+			groups = "i2c0_13_grp";
+			bias-pull-up;
+			slew-rate = <SLEW_RATE_SLOW>;
+			io-standard = <IO_STANDARD_LVCMOS18>;
+		};
+	};
+
+	pinctrl_i2c0_gpio: i2c0-gpio {
+		mux {
+			groups = "gpio0_54_grp";
+			function = "gpio0";
+		};
+
+		conf {
+			groups = "gpio0_54_grp";
+			slew-rate = <SLEW_RATE_SLOW>;
+			io-standard = <IO_STANDARD_LVCMOS18>;
+		};
+	};
+    pinctrl_i2c1_default: i2c1-default {
+        mux {
+            groups = "i2c1_14_grp";
+            function = "i2c1";
+        };
+
+        conf {
+            groups = "i2c1_14_grp";
+            bias-pull-up;
+            slew-rate = <SLEW_RATE_SLOW>;
+            io-standard = <IO_STANDARD_LVCMOS18>;
+        };
+    };
+
+    pinctrl_i2c1_gpio: i2c1-gpio {
+        mux {
+            groups = "gpio0_56_grp";
+            function = "gpio0";
+        };
+
+        conf {
+            groups = "gpio0_56_grp";
+            slew-rate = <SLEW_RATE_SLOW>;
+            io-standard = <IO_STANDARD_LVCMOS18>;
+        };
+    };
+
+	pinctrl_uart0_default: uart0-default {
+		mux {
+			groups = "uart0_8_grp";
+			function = "uart0";
+		};
+
+		conf {
+			groups = "uart0_8_grp";
+			slew-rate = <SLEW_RATE_SLOW>;
+			io-standard = <IO_STANDARD_LVCMOS18>;
+			drive-strength = <12>;
+		};
+
+		conf-rx {
+			pins = "MIO34";
+			bias-high-impedance;
+		};
+
+		conf-tx {
+			pins = "MIO35";
+			bias-disable;
+		};
+	};
+
+	pinctrl_uart1_default: uart1-default {
+		mux {
+			groups = "uart1_13_grp";
+			function = "uart1";
+		};
+
+		conf {
+			groups = "uart1_13_grp";
+			slew-rate = <SLEW_RATE_SLOW>;
+			io-standard = <IO_STANDARD_LVCMOS33>;
+			drive-strength = <12>;
+			
+			
+		};
+
+		conf-rx {
+			pins = "MIO53";
+			bias-high-impedance;
+		};
+
+		conf-tx {
+			pins = "MIO52";
+			bias-disable;
+		};
+	};
+
+
+};
+
+
+&uart0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_uart0_default>;
+};
+
+&uart1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_uart1_default>;
+};
+
+
+/* SD1 with level shifter */
+&sdhci1 {
+        pinctrl-names = "default";
+        pinctrl-0 = <&pinctrl_sdhci1_default>;
+        /*
+         * 1.0 revision has level shifter and this property should be
+         * removed for supporting UHS mode
+         */
+	status = "okay";
+	xlnx,has-cd = <0x1>;
+	xlnx,has-power = <0x0>;
+	xlnx,has-wp = <0x1>;
+	disable-wp;
+	no-1-8-v;
+};
+
+&spi1 {
+	is-decoded-cs = <0>;
+	num-cs = <1>;
+	status = "okay";
+	spidev@0x00 {
+		compatible = "linux,spidev";
+		spi-max-frequency = <1000000>;
+		reg = <0>;
+	};
+};
+
+&qspi {
+	status = "okay";
+	is-dual = <1>;
+	num-cs = <1>;
+
+	flash@0 {
+	compatible = "spansion,mt25qu512a", "jedec,spi-nor";
+	reg = <0>;
+	spi-max-frequency = <50000000>;
+	spi-tx-bus-width = <1>;
+	spi-rx-bus-width = <4>;
+	m25p,fast-read;
+
+	#address-cells = <1>;
+	#size-cells = <1>;
+   };
+};
+
+
+&i2c0 {
+	pinctrl-names = "default", "gpio";
+	pinctrl-0 = <&pinctrl_i2c0_default>;
+	pinctrl-1 = <&pinctrl_i2c0_gpio>;
+	scl-gpios = <&gpio 54 GPIO_ACTIVE_HIGH>;
+	sda-gpios = <&gpio 55 GPIO_ACTIVE_HIGH>;
+	clock-frequency = <100000>;
+
+	i2c-mux@70 { /* u60 */
+          compatible = "nxp,pca9548";
+          #address-cells = <1>;
+          #size-cells = <0>;
+          reg = <0x70>;
+    
+    i2c@2 {
+        #address-cells = <1>;
+        #size-cells = <0>;
+        reg = <2>;
+        	tca6424@22 {
+        		compatible = "ti, tca6424";
+        		reg = <0x22>;
+        		gpio-controller;
+        		#gpio-cells = <2>;
+        	};
+   	};
+
+	i2c@40 { /* i2c mw e1 0 1 */
+		#address-cells = <1>;
+		#size-cells = <0>;
+		reg = <40>;        
+	si5391:clock-generator@74 {
+		reg = <0x74>;
+		compatible = "silabs,si5341";
+		#clock-cells = <2>;
+		#address-cells = <1>;
+		#size-cells = <0>;
+		clocks = <&ref48>;
+		clock-names = "xtal";
+		clock-output-names = "si5341";
+		silabs,pll-m-num = <14000>; /* PLL at 14.0 GHz */
+		silabs,pll-m-den = <48>;
+	};
+   };
+    i2c@80 { /* i2c mw e1 0 1 */
+        #address-cells = <1>;
+        #size-cells = <0>;
+        reg = <80>;
+    si5391_7:clock-generator@74 {
+        reg = <0x74>;
+        compatible = "silabs,si5391";
+        #clock-cells = <2>;
+        #address-cells = <1>;
+        #size-cells = <0>;
+        clocks = <&ref48>;
+        clock-names = "xtal";
+        clock-output-names = "si5391_7";
+        silabs,pll-m-num = <14000>; /* PLL at 14.0 GHz */
+        silabs,pll-m-den = <48>;
+    };
+   };
+  };
+};
+
+&i2c1 {
+    pinctrl-names = "default", "gpio";
+    pinctrl-0 = <&pinctrl_i2c1_default>;
+    pinctrl-1 = <&pinctrl_i2c1_gpio>;
+    scl-gpios = <&gpio 56 GPIO_ACTIVE_HIGH>;
+    sda-gpios = <&gpio 57 GPIO_ACTIVE_HIGH>;
+    clock-frequency = <100000>;
+
+    i2c-mux@70 { 
+          compatible = "nxp,pca9548";
+          #address-cells = <1>;
+          #size-cells = <0>;
+          reg = <0x70>;
+    };
+};
+
+
+

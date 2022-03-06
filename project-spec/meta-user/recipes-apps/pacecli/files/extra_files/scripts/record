@@ -1,0 +1,97 @@
+-- cli:continued
+-- Record samples to file
+-- Usage: record <start|stop> -f <file> [-s --stop-size <size>]  [-t --stop-time <time>]  [-m  <PL-module-id> ]
+
+filename = ""
+record_handle = -1
+stop_size_kb = -1                                   
+stop_time_ms = -1
+args = 0
+
+function help()
+	print("Version 0.1")
+	print("Record from DMA into specified file.")
+	print("Required at least 1Gbit free disk space")
+	print("Usage: record <start|stop> -f|--file <file-name-and-path>  [-s|--stop-size <size in KB>]  [-t|--stop-time <time in millisec>]  [-m  <PL-module-id> ]")
+	print("E.g.  >record -f <path_to_filename>")
+	print("      >record start");
+	end
+
+function main(...)
+	local arg={...}
+	local pl_module_id = -1
+	local start_command = 0
+	local verbose = 0
+	local command = "/usr/bin/inject-record"
+	if #arg < 1 then
+		help()
+		return
+	end
+	for i,v in ipairs(arg) do
+		if (v == "-h") or (v == "--help") then
+			help()
+			return
+		elseif (v == "-f") or (v == "--file") then
+			filename = arg[i+1]
+			print("File to record "..filename)
+		elseif v == "-m" then
+			pl_module_id = arg[i +1]
+			print("Using pl module_id "..pl_module_id)
+			local cmd_script = "init_module"..pl_module_id
+			err, msg = cli(cmd_script)
+			if (err >=0 ) then
+				print(msg)
+			end
+		elseif (v == "-s") or (v == "--stop-size") then
+			stop_size_kb = arg[i +1]
+			print("Using stop-size "..stop_size_kb.." KB")
+		elseif (v == "-t") or (v == "--stop-time") then
+			stop_time_ms = arg[i +1]
+			print("Using stop-time "..stop_time_ms.." ms")
+		elseif v == "start" then
+			if filename == "" then
+				print("Error: filename to record is not set!");
+				help()
+				return
+			else
+				args = "-f "..filename
+			end
+			if stop_size_kb ~=0 then
+				args = args.." -s "..stop_size_kb
+			end
+			if stop_time_ms ~= 0 then
+				args = args.." -t "..stop_time_ms
+			end
+			start_command = 1
+			args = "record "..args
+		elseif v == "-v" then
+			verbose = 1
+			print("Verbose the flow")
+		elseif v == "stop" then
+			if record_handle >0  then
+				local err = proc_kill(record_handle, 2)
+				err = proc_wait(record_handle)
+				record_handle = -1
+			else
+				print("record process is not running")
+			end
+		else
+	--		print("Not implemented: "..v)
+		end
+	end
+	if (start_command ==1)  and (args ~= 0) then
+		if verbose == 1 then
+			args = args.." -v"
+		end
+		record_handle = proc_create(command, args)
+		if record_handle < 0 then
+			print("Failed to run script "..command.." "..args)
+		else
+			err = proc_wait(record_handle)
+			err = proc_kill(record_handle, 2)
+			err = proc_wait(record_handle)
+			record_handle = -1
+		end
+	end
+end;
+

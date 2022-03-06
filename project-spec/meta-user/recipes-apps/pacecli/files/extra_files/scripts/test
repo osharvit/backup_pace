@@ -1,0 +1,60 @@
+
+-- The example how to communicate with H2 from LUA
+
+function myproc(p1, p2)
+    print("sum =",p1+p2)
+end
+
+function sleep(n)
+    local clock= os.clock
+    local t0 = clock()
+    while clock() - t0 <= n do end
+end
+
+function main()
+    print ("Hello from my scr1.main()")
+
+    j_cmd = [[							
+	    { "header": { "type": "req", "uid": 20505 },	
+	    "body": [						
+			{					
+			    "get_param_req": {			
+				"tx_carrier_lte:0": {		
+				"param": ["tx_freq","tx_power"]	
+				}				
+			    }					
+			},					
+			{					
+			    "get_param_req": {			
+				"tx_carrier_lte:1": {		
+				"param": ["tx_freq","tx_power"]	
+				}				
+			    }					
+			}					
+		    ]						
+	    }							
+    ]]
+
+    print(j_cmd)
+    print("Sleep 1 seconds ... ");
+    sleep(1);
+    print("OK");
+
+    setvar("lua_var", "lua_var_val")
+    a = getvar("this_var");
+
+    r, resp = h2(j_cmd)
+
+    r, type = jsonparam(resp, "header.type");
+    print ("result=",r,"header.type=",type);
+
+    if (type == "rsp") then
+	print("The RESPONSE is received")
+    else
+	print("Unexpected value for header.type",type);
+    end
+
+    r, resp = jsonparam(resp, "");
+    print("responce:", resp);
+end
+

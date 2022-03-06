@@ -1,0 +1,29 @@
+-- wr(0) or wr(1): To write some data to the AXIS fifo
+-- and to read the AXIS-FIFO by using CLI 'dump' or download command
+
+function main(arg)
+    print "to call C-writedata";
+
+    num = 128;
+
+    data = {}
+    for i = 1, num do
+	data[i] = i;
+    end;
+
+    print ("To write AXIS-FIFO data ... ");
+    res = writedata(8, "fifo", data, num);
+    print("results:"..res);
+
+    print ("To init AXIS-fifo");
+    regset(32, "fctrl.init", 0);
+    regor(32, "fctrl.init", 1);
+
+    print ("arg == "..arg);
+
+    if (tonumber(arg) == 0) then 
+	cli("dump:32 fifo 10000;");
+    else
+	cli("download:32 fifo 10000 myfifo.bin;");
+    end;
+end;

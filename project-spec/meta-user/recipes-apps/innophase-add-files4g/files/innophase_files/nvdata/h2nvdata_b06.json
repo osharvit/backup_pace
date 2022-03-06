@@ -1,0 +1,43 @@
+{
+    "body": {
+        "load_param_req": {
+            "inventory:2": {
+                "product_id": "h2ha0_2t2r_b40",
+                "serial_number": "h2ha0_reva1_bd06",
+                "hw_version": "reva1"
+            },
+            "register:0": {
+                "cm_ibias_adj": 0,
+                "tx_config_cntrl": 4096,
+                "cm_ref_vset": 9,
+                "sys.vco_coarse_code": 102,
+                "sx.vco_coarse_code": 114,
+                "rx_pi_slew_rate": 0,
+                "rx_eq_res": 0,
+                "rx_eq_cap": 0,
+                "rx_cdr_lin_gain": 31,
+                "tx.vset": 0,
+                "tx.gctrl": 8,
+                "rx_dfe_0.dc[0].off_i":15,
+                "rx_dfe_0.dc[0].off_q":50,
+                "rx_dfe_0.dc[1].off_i":0,
+                "rx_dfe_0.dc[1].off_q":0,
+                "rx_dfe_0.iq_coeff[0]":0,
+                "rx_dfe_0.iq_coeff[1]":255,
+                "rx_dfe_0.iq_coeff[2]":233,
+                "rx_dfe_0.iq_coeff[3]":0,
+                "rx_dfe_1.dc[0].off_i":-80,
+                "rx_dfe_1.dc[0].off_q":-50,
+                "rx_dfe_1.dc[1].off_i":0,
+                "rx_dfe_1.dc[1].off_q":0,
+                "rx_dfe_1.iq_coeff[0]":0,
+                "rx_dfe_1.iq_coeff[1]":255,
+                "rx_dfe_1.iq_coeff[2]":228,
+                "rx_dfe_1.iq_coeff[3]":0
+            },
+            "register:1": {
+                "0x80800030": 5120
+            }
+        }
+    }
+}

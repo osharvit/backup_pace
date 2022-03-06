@@ -1,0 +1,380 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+CLF_CMD	general.h	49;"	d
+CLF_CMD_LIST	general.h	44;"	d
+CLF_DUMP_COM	general.h	50;"	d
+CLF_FILE	general.h	52;"	d
+CLF_HELP	general.h	43;"	d
+CLF_PARAMS_TYPE	general.h	/^struct CLF_PARAMS_TYPE$/;"	s
+CLF_SPI_BITS	general.h	46;"	d
+CLF_SPI_DEV	general.h	45;"	d
+CLF_SPI_MODE	general.h	48;"	d
+CLF_SPI_SPEED	general.h	47;"	d
+CLF_VERBOSE	general.h	51;"	d
+DCO_MA_STEP_SIZE	cmdmgr.h	/^    unsigned int        DCO_MA_STEP_SIZE;$/;"	m	struct:cmd_METADATA_ack
+DCO_MB_STEP_SIZE	cmdmgr.h	/^    unsigned int        DCO_MB_STEP_SIZE;$/;"	m	struct:cmd_METADATA_ack
+DCO_MR_STEP_SIZE	cmdmgr.h	/^    unsigned int        DCO_MR_STEP_SIZE;$/;"	m	struct:cmd_METADATA_ack
+DCO_NA_STEP_SIZE	cmdmgr.h	/^    unsigned int        DCO_NA_STEP_SIZE;$/;"	m	struct:cmd_METADATA_ack
+DCO_NB_STEP_SIZE	cmdmgr.h	/^    unsigned int        DCO_NB_STEP_SIZE;$/;"	m	struct:cmd_METADATA_ack
+DEF_SPI_BITS	general.h	39;"	d
+DEF_SPI_DEV	general.h	38;"	d
+DEF_SPI_MODE	general.h	41;"	d
+DEF_SPI_SPEED	general.h	40;"	d
+ERRORS	cmdmgr.h	/^    unsigned char       ERRORS;$/;"	m	struct:cmd_PHASE_READOUT_ack
+GENERAL	cmdmgr.h	/^    unsigned char       GENERAL;$/;"	m	struct:cmd_INTERRUPT_STATUS_ack
+IBARCHIVE.xattr.security.selinux	PaxHeader/Makefile	/^88 LIBARCHIVE.xattr.security.selinux=dW5jb25maW5lZF91Om9iamVjdF9yOnVzZXJfaG9tZV90OnMwAA$/;"	m
+INPUT_CLOCK_INVALID	cmdmgr.h	/^    unsigned char       INPUT_CLOCK_INVALID;$/;"	m	struct:cmd_INTERRUPT_STATUS_ack
+INPUT_CLOCK_VALID	cmdmgr.h	/^    unsigned char       INPUT_CLOCK_VALID;$/;"	m	struct:cmd_INTERRUPT_STATUS_ack
+LOSS_OF_SIGNAL	cmdmgr.h	/^    unsigned char       LOSS_OF_SIGNAL;$/;"	m	struct:cmd_REFERENCE_STATUS_ack
+MACRO_STR	general.h	34;"	d
+MAX	general.h	152;"	d
+MIN	general.h	149;"	d
+OUT_OF_FREQUENCY	cmdmgr.h	/^    unsigned char       OUT_OF_FREQUENCY;$/;"	m	struct:cmd_REFERENCE_STATUS_ack
+PERIOD_READOUT_A	cmdmgr.h	/^    unsigned long long  PERIOD_READOUT_A;$/;"	m	struct:cmd_INPUT_PERIOD_READOUT_ack
+PERIOD_READOUT_B	cmdmgr.h	/^    unsigned long long  PERIOD_READOUT_B;$/;"	m	struct:cmd_INPUT_PERIOD_READOUT_ack
+PHASE_CONTROL	cmdmgr.h	/^    unsigned char       PHASE_CONTROL;$/;"	m	struct:cmd_INTERRUPT_STATUS_ack
+PHASE_GROUP	cmdmgr.h	/^    unsigned char       PHASE_GROUP;        \/\/ bits [3:0]$/;"	m	struct:cmd_PHASE_READOUT
+PHASE_JAM_PPS_OUT_RANGE_HIGH	cmdmgr.h	/^    unsigned int        PHASE_JAM_PPS_OUT_RANGE_HIGH;$/;"	m	struct:cmd_METADATA_ack
+PHASE_JAM_PPS_OUT_RANGE_LOW	cmdmgr.h	/^    unsigned int        PHASE_JAM_PPS_OUT_RANGE_LOW;$/;"	m	struct:cmd_METADATA_ack
+PHASE_JAM_PPS_OUT_STEP_SIZE	cmdmgr.h	/^    unsigned long long  PHASE_JAM_PPS_OUT_STEP_SIZE;$/;"	m	struct:cmd_METADATA_ack
+PHASE_MONITOR	cmdmgr.h	/^    unsigned char       PHASE_MONITOR;$/;"	m	struct:cmd_REFERENCE_STATUS_ack
+PHASE_READOUT	cmdmgr.h	/^    unsigned long long  PHASE_READOUT;$/;"	m	struct:cmd_PHASE_READOUT_ack
+PHASE_VALID	cmdmgr.h	/^    unsigned char       PHASE_VALID;$/;"	m	struct:cmd_PHASE_READOUT_ack
+PLAN_OPTIONS	cmdmgr.h	/^    unsigned char       PLAN_OPTIONS;$/;"	m	struct:cmd_METADATA_ack
+PLLA	cmdmgr.h	/^    unsigned char       PLLA;$/;"	m	struct:cmd_INTERRUPT_STATUS_ack
+PLLB	cmdmgr.h	/^    unsigned char       PLLB;$/;"	m	struct:cmd_INTERRUPT_STATUS_ack
+PLLR	cmdmgr.h	/^    unsigned char       PLLR;$/;"	m	struct:cmd_INTERRUPT_STATUS_ack
+PLL_HOLDOVER	cmdmgr.h	/^    unsigned char       PLL_HOLDOVER;$/;"	m	struct:cmd_PLL_STATUS_ack
+PLL_HOLDOVER_VALID	cmdmgr.h	/^    unsigned char       PLL_HOLDOVER_VALID;$/;"	m	struct:cmd_PLL_STATUS_ack
+PLL_LOOP_FILTER_STATUS	cmdmgr.h	/^    unsigned char       PLL_LOOP_FILTER_STATUS;$/;"	m	struct:cmd_PLL_STATUS_ack
+PLL_LOSS_OF_LOCK_MISC	cmdmgr.h	/^    unsigned char       PLL_LOSS_OF_LOCK_MISC;$/;"	m	struct:cmd_PLL_STATUS_ack
+PLL_PHASE_BLEEDOUT	cmdmgr.h	/^    unsigned char       PLL_PHASE_BLEEDOUT;$/;"	m	struct:cmd_PLL_STATUS_ack
+PLL_SHORT_TERM_HOLDOVER	cmdmgr.h	/^    unsigned char       PLL_SHORT_TERM_HOLDOVER;$/;"	m	struct:cmd_PLL_STATUS_ack
+PLL_SLIP_COUNT	cmdmgr.h	/^    unsigned char       PLL_SLIP_COUNT;$/;"	m	struct:cmd_PLL_STATUS_ack
+PLL_SLIP_COUNT_NET	cmdmgr.h	/^    unsigned char       PLL_SLIP_COUNT_NET;$/;"	m	struct:cmd_PLL_STATUS_ack
+PLL_STATUS	cmdmgr.h	/^    unsigned char       PLL_STATUS;$/;"	m	struct:cmd_PLL_STATUS_ack
+PRN_ERROR	general.h	95;"	d
+PRN_INFO	general.h	110;"	d
+PRN_IS_DEV	main.cpp	/^int PRN_IS_DEV(void)$/;"	f
+PRN_SEND_TO_DEV	main.cpp	/^int PRN_SEND_TO_DEV(const char* pdata)$/;"	f
+PRN_SET_DEV	main.cpp	/^void PRN_SET_DEV(std::string* ptr)$/;"	f
+PRN_VER	general.h	126;"	d
+RC_CMDMGR_ALLOC_ERROR	rc.h	32;"	d
+RC_CMDMGR_GET_INFO_ERROR	rc.h	33;"	d
+RC_FILE_ALLOC_ERROR	rc.h	36;"	d
+RC_FILE_OPEN_ERROR	rc.h	35;"	d
+RC_FILE_READ_ERROR	rc.h	37;"	d
+RC_FILE_WRITE_ERROR	rc.h	38;"	d
+RC_OK	rc.h	23;"	d
+RC_SPIMGR_ALLOC_ERROR	rc.h	26;"	d
+RC_SPIMGR_API_ERROR	rc.h	28;"	d
+RC_SPIMGR_DEV_ERROR	rc.h	25;"	d
+RC_SPIMGR_FW_ERROR	rc.h	29;"	d
+RC_SPIMGR_HW_ERROR	rc.h	27;"	d
+RC_SPIMGR_TIMEOUT_ERROR	rc.h	30;"	d
+REFERENCE_CLOCK_VALIDATION	cmdmgr.h	/^    unsigned char       REFERENCE_CLOCK_VALIDATION;$/;"	m	struct:cmd_REFERENCE_STATUS_ack
+SI5518	Makefile	/^SI5518 = si5518$/;"	m
+SI5518_CMDID_APP_INFO	general.h	62;"	d
+SI5518_CMDID_BOOT	general.h	58;"	d
+SI5518_CMDID_DEVICE_INFO	general.h	59;"	d
+SI5518_CMDID_HOST_LOAD	general.h	57;"	d
+SI5518_CMDID_INPUT_PERIOD_READOUT	general.h	70;"	d
+SI5518_CMDID_INPUT_STATUS	general.h	64;"	d
+SI5518_CMDID_INTERRUPT_STATUS	general.h	66;"	d
+SI5518_CMDID_METADATA	general.h	67;"	d
+SI5518_CMDID_NVM_STATUS	general.h	60;"	d
+SI5518_CMDID_PHASE_READOUT	general.h	69;"	d
+SI5518_CMDID_PLL_ACTIVE_REFCLOCK	general.h	63;"	d
+SI5518_CMDID_PLL_STATUS	general.h	65;"	d
+SI5518_CMDID_READ_REPLY	general.h	54;"	d
+SI5518_CMDID_REFERENCE_STATUS	general.h	68;"	d
+SI5518_CMDID_RESTART	general.h	61;"	d
+SI5518_CMDID_SIO_INFO	general.h	56;"	d
+SI5518_CMDID_SIO_TEST	general.h	55;"	d
+SI5518_CMDID_TEMPERATURE_READOUT	general.h	71;"	d
+SI5518_OBJS	Makefile	/^SI5518_OBJS = cmdmgr.o file.o main.o spimgr.o$/;"	m
+SOFTWARE	cmdmgr.h	/^    unsigned char       SOFTWARE;$/;"	m	struct:cmd_INTERRUPT_STATUS_ack
+SPIDEV_H	spidev.h	24;"	d
+SPI_3WIRE	spidev.h	43;"	d
+SPI_CPHA	spidev.h	33;"	d
+SPI_CPOL	spidev.h	34;"	d
+SPI_CS_HIGH	spidev.h	41;"	d
+SPI_IOC_MAGIC	spidev.h	56;"	d
+SPI_IOC_MESSAGE	spidev.h	124;"	d
+SPI_IOC_RD_BITS_PER_WORD	spidev.h	136;"	d
+SPI_IOC_RD_LSB_FIRST	spidev.h	132;"	d
+SPI_IOC_RD_MAX_SPEED_HZ	spidev.h	140;"	d
+SPI_IOC_RD_MODE	spidev.h	128;"	d
+SPI_IOC_RD_MODE32	spidev.h	144;"	d
+SPI_IOC_WR_BITS_PER_WORD	spidev.h	137;"	d
+SPI_IOC_WR_LSB_FIRST	spidev.h	133;"	d
+SPI_IOC_WR_MAX_SPEED_HZ	spidev.h	141;"	d
+SPI_IOC_WR_MODE	spidev.h	129;"	d
+SPI_IOC_WR_MODE32	spidev.h	145;"	d
+SPI_LOOP	spidev.h	44;"	d
+SPI_LSB_FIRST	spidev.h	42;"	d
+SPI_MAX_RX_BUF_SIZE	spimgr.h	32;"	d
+SPI_MAX_TX_BUF_SIZE	spimgr.h	31;"	d
+SPI_MODE_0	spidev.h	36;"	d
+SPI_MODE_1	spidev.h	37;"	d
+SPI_MODE_2	spidev.h	38;"	d
+SPI_MODE_3	spidev.h	39;"	d
+SPI_MSGSIZE	spidev.h	121;"	d
+SPI_NO_CS	spidev.h	45;"	d
+SPI_READY	spidev.h	46;"	d
+SPI_RX_DUAL	spidev.h	49;"	d
+SPI_RX_QUAD	spidev.h	50;"	d
+SPI_TX_DUAL	spidev.h	47;"	d
+SPI_TX_QUAD	spidev.h	48;"	d
+TEMPERATURE_READOUT	cmdmgr.h	/^    unsigned int        TEMPERATURE_READOUT;$/;"	m	struct:cmd_TEMPERATURE_READOUT_ack
+VERSION	general.h	36;"	d
+VERSION_H	general.h	31;"	d
+VERSION_L	general.h	32;"	d
+_CMD_MGR_H_	cmdmgr.h	23;"	d
+_FILE_H_	file.h	26;"	d
+_GENERAL_H_	general.h	24;"	d
+_SPI_MGR_H_	spimgr.h	24;"	d
+active_pll_refclk	cmdmgr.h	/^    unsigned char       active_pll_refclk;$/;"	m	struct:cmd_PLL_ACTIVE_REFCLOCK_ack
+alloc_buffers	cmdmgr.cpp	/^int class_cmdmgr::alloc_buffers(void)$/;"	f	class:class_cmdmgr
+app_branch	cmdmgr.h	/^    unsigned char       app_branch;$/;"	m	struct:cmd_APP_INFO_ack
+app_build	cmdmgr.h	/^    unsigned short      app_build;$/;"	m	struct:cmd_APP_INFO_ack
+app_major	cmdmgr.h	/^    unsigned char       app_major;$/;"	m	struct:cmd_APP_INFO_ack
+app_minor	cmdmgr.h	/^    unsigned char       app_minor;$/;"	m	struct:cmd_APP_INFO_ack
+bits_per_word	spidev.h	/^	__u8		bits_per_word;$/;"	m	struct:spi_ioc_transfer
+bytes	cmdmgr.h	/^        }bytes;$/;"	m	union:cmd_READ_REPLY_ack::__anon1	typeref:struct:cmd_READ_REPLY_ack::__anon1::__anon2
+cbpro_rev_major	cmdmgr.h	/^    unsigned char       cbpro_rev_major;$/;"	m	struct:cmd_APP_INFO_ack
+cbpro_rev_minor	cmdmgr.h	/^    unsigned char       cbpro_rev_minor;$/;"	m	struct:cmd_APP_INFO_ack
+cbpro_rev_revision	cmdmgr.h	/^    unsigned char       cbpro_rev_revision;$/;"	m	struct:cmd_APP_INFO_ack
+cbpro_rev_special	cmdmgr.h	/^    unsigned char       cbpro_rev_special;$/;"	m	struct:cmd_APP_INFO_ack
+class_cmdmgr	cmdmgr.cpp	/^class_cmdmgr::class_cmdmgr(class_spimgr* spi, int cmd_id)$/;"	f	class:class_cmdmgr
+class_cmdmgr	cmdmgr.h	/^class class_cmdmgr$/;"	c
+class_file	file.cpp	/^class_file::class_file(const char* filename, const char* mode)$/;"	f	class:class_file
+class_file	file.cpp	/^class_file::class_file(void)$/;"	f	class:class_file
+class_file	file.h	/^class class_file$/;"	c
+class_spimgr	spimgr.cpp	/^class_spimgr::class_spimgr(void)$/;"	f	class:class_spimgr
+class_spimgr	spimgr.h	/^class class_spimgr$/;"	c
+close	file.cpp	/^void class_file::close(void)$/;"	f	class:class_file
+close	spimgr.cpp	/^int class_spimgr::close(void)$/;"	f	class:class_spimgr
+cmd	cmdmgr.h	/^	cmd_HOST_LOAD* 	cmd;$/;"	m	struct:host_load_cmd
+cmd_APP_INFO	cmdmgr.h	/^struct cmd_APP_INFO$/;"	s
+cmd_APP_INFO_ack	cmdmgr.h	/^struct cmd_APP_INFO_ack$/;"	s
+cmd_BOOT	cmdmgr.h	/^struct cmd_BOOT$/;"	s
+cmd_BOOT_ack	cmdmgr.h	/^struct cmd_BOOT_ack$/;"	s
+cmd_DEVICE_INFO	cmdmgr.h	/^struct cmd_DEVICE_INFO$/;"	s
+cmd_DEVICE_INFO_ack	cmdmgr.h	/^struct cmd_DEVICE_INFO_ack$/;"	s
+cmd_HOST_LOAD	cmdmgr.h	/^struct cmd_HOST_LOAD$/;"	s
+cmd_HOST_ack	cmdmgr.h	/^struct cmd_HOST_ack$/;"	s
+cmd_INPUT_PERIOD_READOUT	cmdmgr.h	/^struct cmd_INPUT_PERIOD_READOUT$/;"	s
+cmd_INPUT_PERIOD_READOUT_ack	cmdmgr.h	/^struct cmd_INPUT_PERIOD_READOUT_ack$/;"	s
+cmd_INPUT_STATUS	cmdmgr.h	/^struct cmd_INPUT_STATUS$/;"	s
+cmd_INPUT_STATUS_ack	cmdmgr.h	/^struct cmd_INPUT_STATUS_ack$/;"	s
+cmd_INTERRUPT_STATUS	cmdmgr.h	/^struct cmd_INTERRUPT_STATUS$/;"	s
+cmd_INTERRUPT_STATUS_ack	cmdmgr.h	/^struct cmd_INTERRUPT_STATUS_ack$/;"	s
+cmd_METADATA	cmdmgr.h	/^struct cmd_METADATA$/;"	s
+cmd_METADATA_ack	cmdmgr.h	/^struct cmd_METADATA_ack$/;"	s
+cmd_NVM_STATUS	cmdmgr.h	/^struct cmd_NVM_STATUS$/;"	s
+cmd_NVM_STATUS_ack	cmdmgr.h	/^struct cmd_NVM_STATUS_ack$/;"	s
+cmd_PHASE_READOUT	cmdmgr.h	/^struct cmd_PHASE_READOUT$/;"	s
+cmd_PHASE_READOUT_ack	cmdmgr.h	/^struct cmd_PHASE_READOUT_ack$/;"	s
+cmd_PLL_ACTIVE_REFCLOCK	cmdmgr.h	/^struct cmd_PLL_ACTIVE_REFCLOCK$/;"	s
+cmd_PLL_ACTIVE_REFCLOCK_ack	cmdmgr.h	/^struct cmd_PLL_ACTIVE_REFCLOCK_ack$/;"	s
+cmd_PLL_STATUS	cmdmgr.h	/^struct cmd_PLL_STATUS$/;"	s
+cmd_PLL_STATUS_ack	cmdmgr.h	/^struct cmd_PLL_STATUS_ack$/;"	s
+cmd_READ_REPLY	cmdmgr.h	/^struct cmd_READ_REPLY$/;"	s
+cmd_READ_REPLY_ack	cmdmgr.h	/^struct cmd_READ_REPLY_ack$/;"	s
+cmd_REFERENCE_STATUS	cmdmgr.h	/^struct cmd_REFERENCE_STATUS$/;"	s
+cmd_REFERENCE_STATUS_ack	cmdmgr.h	/^struct cmd_REFERENCE_STATUS_ack$/;"	s
+cmd_RESTART	cmdmgr.h	/^struct cmd_RESTART$/;"	s
+cmd_RESTART_ack	cmdmgr.h	/^struct cmd_RESTART_ack$/;"	s
+cmd_SIO_INFO	cmdmgr.h	/^struct cmd_SIO_INFO$/;"	s
+cmd_SIO_INFO_ack	cmdmgr.h	/^struct cmd_SIO_INFO_ack$/;"	s
+cmd_SIO_TEST	cmdmgr.h	/^struct cmd_SIO_TEST$/;"	s
+cmd_SIO_TEST_ack	cmdmgr.h	/^struct cmd_SIO_TEST_ack$/;"	s
+cmd_SIO_TEST_data_size	cmdmgr.h	50;"	d
+cmd_TEMPERATURE_READOUT	cmdmgr.h	/^struct cmd_TEMPERATURE_READOUT$/;"	s
+cmd_TEMPERATURE_READOUT_ack	cmdmgr.h	/^struct cmd_TEMPERATURE_READOUT_ack$/;"	s
+cmd_buf_size	cmdmgr.h	/^    unsigned short      cmd_buf_size;$/;"	m	struct:cmd_SIO_INFO_ack
+cmd_id	cmdmgr.h	/^    unsigned char       cmd_id;$/;"	m	struct:cmd_SIO_TEST_ack
+cmd_list	general.h	/^    std::vector<si5518_command>     cmd_list;$/;"	m	struct:CLF_PARAMS_TYPE
+cmd_list	main.cpp	/^int cmd_list(void)$/;"	f
+cmdid2name	main.cpp	/^const char* cmdid2name(int id, int& param_num)$/;"	f
+cmdname2id	main.cpp	/^int cmdname2id(const char* name, int& param_num)$/;"	f
+command_list	main.cpp	/^command_list [] = $/;"	v	typeref:struct:si5518_cmd_id
+create_APP_INFO	cmdmgr.cpp	/^int class_cmdmgr::create_APP_INFO(void)$/;"	f	class:class_cmdmgr
+create_BOOT	cmdmgr.cpp	/^int class_cmdmgr::create_BOOT(void)$/;"	f	class:class_cmdmgr
+create_DEVICE_INFO	cmdmgr.cpp	/^int class_cmdmgr::create_DEVICE_INFO(void)$/;"	f	class:class_cmdmgr
+create_HOST_LOAD	cmdmgr.cpp	/^int class_cmdmgr::create_HOST_LOAD(std::vector<std::string>& params)$/;"	f	class:class_cmdmgr
+create_INPUT_PERIOD_READOUT	cmdmgr.cpp	/^int class_cmdmgr::create_INPUT_PERIOD_READOUT(std::vector<std::string>& params)$/;"	f	class:class_cmdmgr
+create_INPUT_STATUS	cmdmgr.cpp	/^int class_cmdmgr::create_INPUT_STATUS(std::vector<std::string>& params)$/;"	f	class:class_cmdmgr
+create_INTERRUPT_STATUS	cmdmgr.cpp	/^int class_cmdmgr::create_INTERRUPT_STATUS(std::vector<std::string>& params)$/;"	f	class:class_cmdmgr
+create_METADATA	cmdmgr.cpp	/^int class_cmdmgr::create_METADATA(std::vector<std::string>& params)$/;"	f	class:class_cmdmgr
+create_NVM_STATUS	cmdmgr.cpp	/^int class_cmdmgr::create_NVM_STATUS(void)$/;"	f	class:class_cmdmgr
+create_PHASE_READOUT	cmdmgr.cpp	/^int class_cmdmgr::create_PHASE_READOUT(std::vector<std::string>& params)$/;"	f	class:class_cmdmgr
+create_PLL_ACTIVE_REFCLOCK	cmdmgr.cpp	/^int class_cmdmgr::create_PLL_ACTIVE_REFCLOCK(std::vector<std::string>& params)$/;"	f	class:class_cmdmgr
+create_PLL_STATUS	cmdmgr.cpp	/^int class_cmdmgr::create_PLL_STATUS(std::vector<std::string>& params)$/;"	f	class:class_cmdmgr
+create_READ_REPLY	cmdmgr.cpp	/^int class_cmdmgr::create_READ_REPLY(void)$/;"	f	class:class_cmdmgr
+create_REFERENCE_STATUS	cmdmgr.cpp	/^int class_cmdmgr::create_REFERENCE_STATUS(std::vector<std::string>& params)$/;"	f	class:class_cmdmgr
+create_RESTART	cmdmgr.cpp	/^int class_cmdmgr::create_RESTART(void)$/;"	f	class:class_cmdmgr
+create_SIO_INFO	cmdmgr.cpp	/^int class_cmdmgr::create_SIO_INFO(void)$/;"	f	class:class_cmdmgr
+create_SIO_TEST	cmdmgr.cpp	/^int class_cmdmgr::create_SIO_TEST(void)$/;"	f	class:class_cmdmgr
+create_TEMPERATURE_READOUT	cmdmgr.cpp	/^int class_cmdmgr::create_TEMPERATURE_READOUT(std::vector<std::string>& params)$/;"	f	class:class_cmdmgr
+create_command	cmdmgr.cpp	/^int class_cmdmgr::create_command(std::vector<std::string>& params)$/;"	f	class:class_cmdmgr
+cs_change	spidev.h	/^	__u8		cs_change;$/;"	m	struct:spi_ioc_transfer
+data	cmdmgr.h	/^    unsigned char       data[1];$/;"	m	struct:cmd_HOST_LOAD
+data	cmdmgr.h	/^    unsigned char       data[cmd_SIO_TEST_data_size];$/;"	m	struct:cmd_SIO_TEST
+data	cmdmgr.h	/^    unsigned char       data[cmd_SIO_TEST_data_size];$/;"	m	struct:cmd_SIO_TEST_ack
+delay_usecs	spidev.h	/^	__u16		delay_usecs;$/;"	m	struct:spi_ioc_transfer
+design_id	cmdmgr.h	/^    unsigned char       design_id[8];$/;"	m	struct:cmd_APP_INFO_ack
+dev_grade	cmdmgr.h	/^    unsigned char       dev_grade;$/;"	m	struct:cmd_DEVICE_INFO_ack
+dev_revision	cmdmgr.h	/^    unsigned char       dev_revision;$/;"	m	struct:cmd_DEVICE_INFO_ack
+dump	main.cpp	/^void dump(void* p, int size)$/;"	f
+dumpdata	spimgr.cpp	/^int class_spimgr::dumpdata(const char* msg, void* pdata, int size)$/;"	f	class:class_spimgr
+dumpena	spimgr.cpp	/^int class_spimgr::dumpena(int ena)$/;"	f	class:class_spimgr
+err	cmdmgr.h	/^    }err;$/;"	m	struct:cmd_READ_REPLY_ack	typeref:union:cmd_READ_REPLY_ack::__anon1
+err1_cnt	cmdmgr.h	/^    unsigned char       err1_cnt;$/;"	m	struct:cmd_NVM_STATUS_ack
+err2_cnt	cmdmgr.h	/^    unsigned char       err2_cnt;$/;"	m	struct:cmd_NVM_STATUS_ack
+flags	general.h	/^    unsigned int                    flags;          \/\/ The CLF_xxxx$/;"	m	struct:CLF_PARAMS_TYPE
+g_putputdev	main.cpp	/^std::string* 				g_putputdev = NULL;$/;"	v
+g_verbose	main.cpp	/^int 						g_verbose   = 0;$/;"	v
+host_load_cmd	cmdmgr.h	/^struct host_load_cmd$/;"	s
+id	cmdmgr.h	/^    unsigned char       id;$/;"	m	struct:cmd_APP_INFO
+id	cmdmgr.h	/^    unsigned char       id;$/;"	m	struct:cmd_BOOT
+id	cmdmgr.h	/^    unsigned char       id;$/;"	m	struct:cmd_DEVICE_INFO
+id	cmdmgr.h	/^    unsigned char       id;$/;"	m	struct:cmd_HOST_LOAD
+id	cmdmgr.h	/^    unsigned char       id;$/;"	m	struct:cmd_INPUT_PERIOD_READOUT
+id	cmdmgr.h	/^    unsigned char       id;$/;"	m	struct:cmd_INPUT_STATUS
+id	cmdmgr.h	/^    unsigned char       id;$/;"	m	struct:cmd_INTERRUPT_STATUS
+id	cmdmgr.h	/^    unsigned char       id;$/;"	m	struct:cmd_METADATA
+id	cmdmgr.h	/^    unsigned char       id;$/;"	m	struct:cmd_NVM_STATUS
+id	cmdmgr.h	/^    unsigned char       id;$/;"	m	struct:cmd_PHASE_READOUT
+id	cmdmgr.h	/^    unsigned char       id;$/;"	m	struct:cmd_PLL_ACTIVE_REFCLOCK
+id	cmdmgr.h	/^    unsigned char       id;$/;"	m	struct:cmd_PLL_STATUS
+id	cmdmgr.h	/^    unsigned char       id;$/;"	m	struct:cmd_READ_REPLY
+id	cmdmgr.h	/^    unsigned char       id;$/;"	m	struct:cmd_REFERENCE_STATUS
+id	cmdmgr.h	/^    unsigned char       id;$/;"	m	struct:cmd_RESTART
+id	cmdmgr.h	/^    unsigned char       id;$/;"	m	struct:cmd_SIO_INFO
+id	cmdmgr.h	/^    unsigned char       id;$/;"	m	struct:cmd_SIO_TEST
+id	cmdmgr.h	/^    unsigned char       id;$/;"	m	struct:cmd_TEMPERATURE_READOUT
+id	general.h	/^    int                         id;$/;"	m	struct:si5518_command
+id	main.cpp	/^	int				id;$/;"	m	struct:si5518_cmd_id	file:
+init	spimgr.cpp	/^int class_spimgr::init(const char* spidev, unsigned char mode, unsigned int speed, unsigned int bits)$/;"	f	class:class_spimgr
+inp_clk_validation	cmdmgr.h	/^    unsigned char       inp_clk_validation;$/;"	m	struct:cmd_INPUT_STATUS_ack
+input	cmdmgr.h	/^    unsigned char       input;$/;"	m	struct:cmd_INPUT_STATUS
+is_error	cmdmgr.cpp	/^int class_cmdmgr::is_error(unsigned char status)$/;"	f	class:class_cmdmgr
+is_open	file.cpp	/^int class_file::is_open(void)$/;"	f	class:class_file
+len	spidev.h	/^	__u32		len;$/;"	m	struct:spi_ioc_transfer
+length	file.cpp	/^int class_file::length(void)$/;"	f	class:class_file
+loss_of_signal	cmdmgr.h	/^    unsigned char       loss_of_signal;$/;"	m	struct:cmd_INPUT_STATUS_ack
+m_InStreamSize	cmdmgr.h	/^            unsigned int        m_InStreamSize;$/;"	m	class:class_cmdmgr
+m_OutStreamSize	cmdmgr.h	/^            unsigned int        m_OutStreamSize;$/;"	m	class:class_cmdmgr
+m_bits	spimgr.h	/^    unsigned int    m_bits;$/;"	m	class:class_spimgr
+m_cmdid	cmdmgr.h	/^            int                 m_cmdid;$/;"	m	class:class_cmdmgr
+m_dev	spimgr.h	/^    std::string     m_dev;$/;"	m	class:class_spimgr
+m_dump	spimgr.h	/^    int             m_dump;$/;"	m	class:class_spimgr
+m_file	file.h	/^                FILE*       m_file;$/;"	m	class:class_file
+m_hspi	spimgr.h	/^    int             m_hspi;$/;"	m	class:class_spimgr
+m_mode	spimgr.h	/^    unsigned char   m_mode;$/;"	m	class:class_spimgr
+m_pInStream	cmdmgr.h	/^            unsigned char*      m_pInStream;$/;"	m	class:class_cmdmgr
+m_pOutStream	cmdmgr.h	/^            unsigned char*      m_pOutStream;$/;"	m	class:class_cmdmgr
+m_rx	spimgr.h	/^    unsigned char   m_rx[SPI_MAX_RX_BUF_SIZE];$/;"	m	class:class_spimgr
+m_speed	spimgr.h	/^    unsigned int    m_speed;$/;"	m	class:class_spimgr
+m_spi	cmdmgr.h	/^            class_spimgr*       m_spi;$/;"	m	class:class_cmdmgr
+m_tx	spimgr.h	/^    unsigned char   m_tx[SPI_MAX_TX_BUF_SIZE];$/;"	m	class:class_spimgr
+main	main.cpp	/^int main(int argc, char** argv)$/;"	f
+name	main.cpp	/^	const char*		name;$/;"	m	struct:si5518_cmd_id	file:
+open	file.cpp	/^int class_file::open(const char* filename, const char* mode)$/;"	f	class:class_file
+opn_id	cmdmgr.h	/^    unsigned int        opn_id;$/;"	m	struct:cmd_DEVICE_INFO_ack
+opn_rev	cmdmgr.h	/^    unsigned char       opn_rev;$/;"	m	struct:cmd_DEVICE_INFO_ack
+out_of_freq	cmdmgr.h	/^    unsigned char       out_of_freq;$/;"	m	struct:cmd_INPUT_STATUS_ack
+package	cmdmgr.h	/^    unsigned char       package;$/;"	m	struct:cmd_DEVICE_INFO_ack
+pad	spidev.h	/^	__u8		pad;$/;"	m	struct:spi_ioc_transfer
+param_get_num	main.cpp	/^int param_get_num(char * pVal)$/;"	f
+param_num	main.cpp	/^	int				param_num;$/;"	m	struct:si5518_cmd_id	file:
+param_pars	main.cpp	/^int param_pars (int argc, char ** argv, CLF_PARAMS_TYPE * p)$/;"	f
+params	general.h	/^    std::vector<std::string>    params;$/;"	m	struct:si5518_command
+part_num	cmdmgr.h	/^    unsigned short      part_num;$/;"	m	struct:cmd_DEVICE_INFO_ack
+phase_monitor	cmdmgr.h	/^    unsigned char       phase_monitor;$/;"	m	struct:cmd_INPUT_STATUS_ack
+planner_branch	cmdmgr.h	/^    unsigned char       planner_branch;$/;"	m	struct:cmd_APP_INFO_ack
+planner_build	cmdmgr.h	/^    unsigned short      planner_build;$/;"	m	struct:cmd_APP_INFO_ack
+planner_major	cmdmgr.h	/^    unsigned char       planner_major;$/;"	m	struct:cmd_APP_INFO_ack
+planner_minor	cmdmgr.h	/^    unsigned char       planner_minor;$/;"	m	struct:cmd_APP_INFO_ack
+pll	cmdmgr.h	/^    unsigned char       pll;$/;"	m	struct:cmd_PLL_ACTIVE_REFCLOCK
+pll	cmdmgr.h	/^    unsigned char       pll;$/;"	m	struct:cmd_PLL_STATUS
+proc	cmdmgr.cpp	/^int class_cmdmgr::proc(std::vector<std::string>& params)$/;"	f	class:class_cmdmgr
+read	file.cpp	/^int class_file::read(void*p, int len)$/;"	f	class:class_file
+read_to_str	file.cpp	/^std::string class_file::read_to_str(void)$/;"	f	class:class_file
+readfile	file.cpp	/^int class_file::readfile(void* &ptr)$/;"	f	class:class_file
+recv_resp	spimgr.cpp	/^int class_spimgr::recv_resp(void*presp, int resp_size, void* api_err)$/;"	f	class:class_spimgr
+ref_a	cmdmgr.h	/^    unsigned char       ref_a;        \/\/ bits [7:0]$/;"	m	struct:cmd_INPUT_PERIOD_READOUT
+ref_b	cmdmgr.h	/^    unsigned char       ref_b;        \/\/ bits [7:0]$/;"	m	struct:cmd_INPUT_PERIOD_READOUT
+repl_buf_size	cmdmgr.h	/^    unsigned short      repl_buf_size;$/;"	m	struct:cmd_SIO_INFO_ack
+res0	cmdmgr.h	/^    unsigned char       res0;$/;"	m	struct:cmd_DEVICE_INFO_ack
+res1	cmdmgr.h	/^    unsigned char       res1[6];$/;"	m	struct:cmd_DEVICE_INFO_ack
+rom_rev	cmdmgr.h	/^    unsigned char       rom_rev;$/;"	m	struct:cmd_DEVICE_INFO_ack
+rx_buf	spidev.h	/^	__u64		rx_buf;$/;"	m	struct:spi_ioc_transfer
+rx_nbits	spidev.h	/^	__u8		rx_nbits;$/;"	m	struct:spi_ioc_transfer
+send_cmd	spimgr.cpp	/^int class_spimgr::send_cmd(void* pcmd, int cmd_size)$/;"	f	class:class_spimgr
+send_data	spimgr.cpp	/^int class_spimgr::send_data(void* pcmd, int cmd_size, void*presp, int resp_size, void* api_err)$/;"	f	class:class_spimgr
+show_APP_INFO_ack	cmdmgr.cpp	/^int class_cmdmgr::show_APP_INFO_ack(void)$/;"	f	class:class_cmdmgr
+show_BOOT_ack	cmdmgr.cpp	/^int class_cmdmgr::show_BOOT_ack(void)$/;"	f	class:class_cmdmgr
+show_DEVICE_INFO_ack	cmdmgr.cpp	/^int class_cmdmgr::show_DEVICE_INFO_ack(void)$/;"	f	class:class_cmdmgr
+show_HOST_LOAD_ack	cmdmgr.cpp	/^int class_cmdmgr::show_HOST_LOAD_ack(void)$/;"	f	class:class_cmdmgr
+show_INPUT_PERIOD_READOUT_ack	cmdmgr.cpp	/^int class_cmdmgr::show_INPUT_PERIOD_READOUT_ack(void)$/;"	f	class:class_cmdmgr
+show_INPUT_STATUS_ack	cmdmgr.cpp	/^int class_cmdmgr::show_INPUT_STATUS_ack(void)$/;"	f	class:class_cmdmgr
+show_INTERRUPT_STATUS_ack	cmdmgr.cpp	/^int class_cmdmgr::show_INTERRUPT_STATUS_ack(void)$/;"	f	class:class_cmdmgr
+show_METADATA_ack	cmdmgr.cpp	/^int class_cmdmgr::show_METADATA_ack(void)$/;"	f	class:class_cmdmgr
+show_NVM_STATUS_ack	cmdmgr.cpp	/^int class_cmdmgr::show_NVM_STATUS_ack(void)$/;"	f	class:class_cmdmgr
+show_PHASE_READOUT_ack	cmdmgr.cpp	/^int class_cmdmgr::show_PHASE_READOUT_ack(void)$/;"	f	class:class_cmdmgr
+show_PLL_ACTIVE_REFCLOCK_ack	cmdmgr.cpp	/^int class_cmdmgr::show_PLL_ACTIVE_REFCLOCK_ack(void)$/;"	f	class:class_cmdmgr
+show_PLL_STATUS_ack	cmdmgr.cpp	/^int class_cmdmgr::show_PLL_STATUS_ack(void)$/;"	f	class:class_cmdmgr
+show_READ_REPLY_ack	cmdmgr.cpp	/^int class_cmdmgr::show_READ_REPLY_ack(void)$/;"	f	class:class_cmdmgr
+show_REFERENCE_STATUS_ack	cmdmgr.cpp	/^int class_cmdmgr::show_REFERENCE_STATUS_ack(void)$/;"	f	class:class_cmdmgr
+show_RESTART_ack	cmdmgr.cpp	/^int class_cmdmgr::show_RESTART_ack(void)$/;"	f	class:class_cmdmgr
+show_SIO_INFO_ack	cmdmgr.cpp	/^int class_cmdmgr::show_SIO_INFO_ack(void)$/;"	f	class:class_cmdmgr
+show_SIO_TEST_ack	cmdmgr.cpp	/^int class_cmdmgr::show_SIO_TEST_ack(void)$/;"	f	class:class_cmdmgr
+show_TEMPERATURE_READOUT_ack	cmdmgr.cpp	/^int class_cmdmgr::show_TEMPERATURE_READOUT_ack(void)$/;"	f	class:class_cmdmgr
+si5518_cmd_id	main.cpp	/^struct si5518_cmd_id$/;"	s	file:
+si5518_command	general.h	/^struct si5518_command$/;"	s
+speed_hz	spidev.h	/^	__u32		speed_hz;$/;"	m	struct:spi_ioc_transfer
+spi_bits	general.h	/^    unsigned int                    spi_bits;$/;"	m	struct:CLF_PARAMS_TYPE
+spi_dev	general.h	/^    char                            spi_dev[128];$/;"	m	struct:CLF_PARAMS_TYPE
+spi_ioc_transfer	spidev.h	/^struct spi_ioc_transfer {$/;"	s
+spi_mode	general.h	/^    unsigned char                   spi_mode;$/;"	m	struct:CLF_PARAMS_TYPE
+spi_speed	general.h	/^    unsigned int                    spi_speed;$/;"	m	struct:CLF_PARAMS_TYPE
+status	cmdmgr.h	/^    unsigned char       status;$/;"	m	struct:cmd_APP_INFO_ack
+status	cmdmgr.h	/^    unsigned char       status;$/;"	m	struct:cmd_BOOT_ack
+status	cmdmgr.h	/^    unsigned char       status;$/;"	m	struct:cmd_DEVICE_INFO_ack
+status	cmdmgr.h	/^    unsigned char       status;$/;"	m	struct:cmd_HOST_ack
+status	cmdmgr.h	/^    unsigned char       status;$/;"	m	struct:cmd_INPUT_PERIOD_READOUT_ack
+status	cmdmgr.h	/^    unsigned char       status;$/;"	m	struct:cmd_INPUT_STATUS_ack
+status	cmdmgr.h	/^    unsigned char       status;$/;"	m	struct:cmd_INTERRUPT_STATUS_ack
+status	cmdmgr.h	/^    unsigned char       status;$/;"	m	struct:cmd_METADATA_ack
+status	cmdmgr.h	/^    unsigned char       status;$/;"	m	struct:cmd_NVM_STATUS_ack
+status	cmdmgr.h	/^    unsigned char       status;$/;"	m	struct:cmd_PHASE_READOUT_ack
+status	cmdmgr.h	/^    unsigned char       status;$/;"	m	struct:cmd_PLL_ACTIVE_REFCLOCK_ack
+status	cmdmgr.h	/^    unsigned char       status;$/;"	m	struct:cmd_PLL_STATUS_ack
+status	cmdmgr.h	/^    unsigned char       status;$/;"	m	struct:cmd_READ_REPLY_ack
+status	cmdmgr.h	/^    unsigned char       status;$/;"	m	struct:cmd_REFERENCE_STATUS_ack
+status	cmdmgr.h	/^    unsigned char       status;$/;"	m	struct:cmd_RESTART_ack
+status	cmdmgr.h	/^    unsigned char       status;$/;"	m	struct:cmd_SIO_INFO_ack
+status	cmdmgr.h	/^    unsigned char       status;$/;"	m	struct:cmd_SIO_TEST_ack
+status	cmdmgr.h	/^    unsigned char       status;$/;"	m	struct:cmd_TEMPERATURE_READOUT_ack
+temp_grade	cmdmgr.h	/^    unsigned char       temp_grade;$/;"	m	struct:cmd_DEVICE_INFO_ack
+time	PaxHeader/Makefile	/^30 atime=1638682065.795504912$/;"	m
+time	PaxHeader/Makefile	/^30 ctime=1636873292.409285305$/;"	m
+total_size	cmdmgr.h	/^	int 			total_size;$/;"	m	struct:host_load_cmd
+tx_buf	spidev.h	/^	__u64		tx_buf;$/;"	m	struct:spi_ioc_transfer
+tx_nbits	spidev.h	/^	__u8		tx_nbits;$/;"	m	struct:spi_ioc_transfer
+usage	main.cpp	/^int usage (void)$/;"	f
+val	cmdmgr.h	/^            unsigned char val[2];$/;"	m	struct:cmd_READ_REPLY_ack::__anon1::__anon2
+value	cmdmgr.h	/^        unsigned short      value;$/;"	m	union:cmd_READ_REPLY_ack::__anon1
+word_delay_usecs	spidev.h	/^	__u8		word_delay_usecs;$/;"	m	struct:spi_ioc_transfer
+write	file.cpp	/^int class_file::write(void*p, int len)$/;"	f	class:class_file
+xMACRO_STR	general.h	35;"	d
+~class_cmdmgr	cmdmgr.cpp	/^class_cmdmgr::~class_cmdmgr(void)$/;"	f	class:class_cmdmgr
+~class_file	file.cpp	/^class_file::~class_file(void)$/;"	f	class:class_file
+~class_spimgr	spimgr.cpp	/^class_spimgr::~class_spimgr(void)$/;"	f	class:class_spimgr

@@ -1,0 +1,97 @@
+// my test H2 command
+command ( rssi: h2)
+{ "header": {"type": "req", "uid": 11037},
+"body": {
+"get_rssi_req": {
+"rx_carrier_lte:0": null
+}
+}
+}
+
+
+format
+    body.get_rssi_rsp."rx_carrier_lte:0"."rx_sigpath:0"."rssi";
+    body.get_rssi_rsp."rx_carrier_lte:0"."rx_sigpath:0"."rx_iq_level";
+    body.get_rssi_rsp."rx_carrier_lte:0"."rx_sigpath:1"."rssi";
+end
+
+
+// This is cmd1 command without any patameters
+// and you may run it just as cmd1
+
+command(cmd:cli)
+    rssi;
+    mynewcmd_for_h2;
+    print wait 5 secs .... ;
+    sleep 5000;
+    print done;
+end
+
+
+
+// My command cmd2
+// Again my description
+
+command (sum:CLI, a, b=100)
+	math res $a + $b;
+	print Sum of $a+$b = $res;
+	set res;
+end
+
+// reg8 is a syn to reg:8
+// reg8 <addr> <val>
+
+command (reg8 : cli, addr, val)
+    reg $addr : 8 = $val
+end
+
+
+
+// My pll command
+// This is my pll command
+command( pll : h2, my_source=PLL, y=2, z=10)
+{ "header": {"type": "req", "uid": $H2UID},
+         "body": {
+               "resync_req": {
+                           "re:0": {
+                                "resync_type": $my_source
+                           }
+                }
+         }
+}
+format
+    ;
+    header;
+    body;
+end
+
+// My pll command
+// This is my pll command
+command( ver : h2)
+{ "header": {"type": "req", "uid": $H2UID},
+"body": {
+"get_swver_req": {
+"re:0": null
+}
+}
+}
+
+format
+    ;
+end
+
+// My pll command
+// This is my pll command
+command( active : h2)
+{ "header": {"type": "req", "uid": 17532},
+    "body": {
+              "activate_sw_req": {
+                    "re:0": {
+                    "sw_select": "passive"
+                    }
+              }
+    }
+}
+format
+    body.activate_sw_rsp."re:0"."sw_select";
+end

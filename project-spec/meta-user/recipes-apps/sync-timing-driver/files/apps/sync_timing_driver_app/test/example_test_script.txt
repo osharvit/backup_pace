@@ -1,0 +1,82 @@
+#/****************************************************************************************/
+#/**                  Copyright (c) 2018, 2021 Skyworks Solution Inc.                   **/
+#/****************************************************************************************/
+#/** This software is provided 'as-is', without any express or implied warranty.        **/
+#/** In no event will the authors be held liable for any damages arising from the use   **/
+#/** of this software.                                                                  **/
+#/** Permission is granted to anyone to use this software for any purpose, including    **/
+#/** commercial applications, and to alter it and redistribute it freely, subject to    **/
+#/** the following restrictions:                                                        **/
+#/** 1. The origin of this software must not be misrepresented; you must not claim that **/
+#/**    you wrote the original software. If you use this software in a product,         **/
+#/**    an acknowledgment in the product documentation would be appreciated but is not  **/
+#/**    required.                                                                       **/
+#/** 2. Altered source versions must be plainly marked as such, and must not be         **/
+#/**    misrepresented as being the original software.                                  **/
+#/** 3. This notice may not be removed or altered from any source distribution.         **/
+#/****************************************************************************************/
+driver loglevel
+driver version
+driver reset
+driver version
+driver dload_image /mnt/sdcard/files/10g/fplans/fmc_ptp_steered_rf/b0/prod_fw.boot.bin /mnt/sdcard/files/10g/fplans/fmc_ptp_steered_rf/b0/user_config.boot.bin
+driver version
+driver chip_mode
+driver reset_bl
+driver dload_image /mnt/sdcard/files/10g/fplans/fmc_ptp_steered_rf/b0/prod_fw.boot.bin /mnt/sdcard/files/10g/fplans/fmc_ptp_steered_rf/b0/user_config.boot.bin
+driver version
+driver chip_mode
+driver reg_read 0xF14 1
+sleep 5000
+driver reg_read 0xF14 1
+driver pll_status 0
+driver pll_status 1
+driver pll_status 2
+driver input_status 0
+driver input_status 2
+driver input_status 4
+driver pll_ho 1
+driver pll_status 1
+driver pll_input 1 2
+sleep 2000
+driver pll_status 1
+sleep 5000
+fw dev_info
+fw app_info
+fw restart_bl
+fw dev_info
+fw app_info
+fw host_load /mnt/sdcard/files/10g/fplans/fmc_ptp_steered_rf/b0/prod_fw.boot.bin
+fw host_load /mnt/sdcard/files/10g/fplans/fmc_ptp_steered_rf/b0/user_config.boot.bin
+fw boot
+driver reg_read 0xF14 1
+sleep 5000
+driver reg_read 0xF14 1
+fw metadata
+fw app_info
+fw dev_info
+fw pll_status 0
+fw pll_status 1
+fw pll_status 2
+fw input_status 0
+fw input_status 2
+fw input_status 4
+fw pll_ho 1 1
+fw pll_ho 1 0
+sleep 3000
+fw intr_status
+fw pll_status 1
+fw ref_status
+fw temp_read
+fw phase_read 0
+fw freq_read 2 4
+sleep 1000
+fw pll_active_ref 1
+fw pll_input 1 4
+fw pll_active_ref 1
+sleep 3000
+fw pll_status 1
+fw var_dco 0x1 10
+fw ph_jam_1pps 0 10
+fw app_info
+

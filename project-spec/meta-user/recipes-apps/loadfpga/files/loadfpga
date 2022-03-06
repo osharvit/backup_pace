@@ -1,0 +1,84 @@
+#!/bin/sh
+
+# echo "load FPGA + DRV + dtbo"
+# #get fpga bin file
+# local_f="$(ls  /lib/firmware/base/*.bin)" 
+# fpgautil -o /lib/firmware/base/base.dtbo -b $local_f
+# exit
+# mkdir /mnt/ramdisk
+# mount -t tmpfs -o size=20m tmpfs /mnt/ramdisk
+
+
+
+echo "run route command"                
+route add default gw 192.168.2.30 eth0
+                                                     
+echo "load FPGA + DRV + dtbo"                        
+#get fpga bin file                                   
+local_f="$(ls  /lib/firmware/base/*.bin)"            
+
+firmware_name="$(basename -- $local_f)"  
+                                         
+echo "Version base FPGA file name that work with pl.dtsi ${firmware_name}"          
+                                         
+echo $1                                  
+if [ -z "$1" ]                           
+then                                     
+      f=$local_f                                         
+else                                           
+      f=$1                              
+                                         
+fi                                       
+echo "copy ${f} to the RAM and change the name to ${firmware_name}"
+ln -s $f /run/$firmware_name              
+echo "End cpoy and start loading /run/${firmware_name}"   
+fpgautil -R #-R                    Optional: Remove overlay from a live tree
+fpgautil -o /lib/firmware/base/base.dtbo -b /run/$firmware_name
+echo "del $firmware_name from RAM"
+rm /run/$firmware_name  
+exit
+
+target='/fpga_ver'
+
+echo $target
+let count=0
+for f in "$target"/*
+do
+    if [ "${f##*.}" == "bit" ]; then
+      echo $count")"  $(basename $f)
+      let count=count+1
+    fi
+done
+
+echo ""
+echo "choice file to load"
+read choice
+
+if [ "$count" == "0" ]; then
+  echo "no files is present"
+  exit
+fi
+
+
+if [ "$count" -lt "$choice" ]; then
+  echo "Wrong number"
+  exit
+fi
+
+let count=0
+for f in "$target"/*
+do
+
+    if [ "${f##*.}" == "bit" ]; then
+	if [ "$count" == "$choice" ]; then
+	  echo "Loading $f"
+	  fpgautil -o /lib/firmware/base/base.dtbo -b $f
+	  echo "Done"
+	  break
+	fi
+	let count=count+1
+    fi
+done
+
+
+

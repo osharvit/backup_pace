@@ -1,0 +1,51 @@
+function table2string(data)
+
+    local i = 1;
+    local txt = "";
+    while (data[i] ~= nil) do
+    --if (data [i] ~= 10 and data [i] ~= 13) then
+	txt = txt..string.char(data[i]);
+    --end;
+    i = i +1;
+    end;
+
+    return txt;
+end;
+
+function main()
+
+    local client = socket();
+    res = connect(client, "127.0.0.1", 10000);
+
+    if (res >= 0) then
+	print("Connected .... ");
+	len, logo = recv(client, 1000, 100);
+	io.write(table2string(logo));
+
+	while 1 do
+	    msg = io.read();
+	    if (msg == nil or msg == "exit") then
+		break;
+	    end;
+
+	    if (msg ~= "") then
+		res = send(client, msg);
+		if (res <= 0) then
+		    print("Error to send the command "..res);
+		    break;
+		end;
+
+		len, data = recv(client, 2048, 100);
+		if (len > 0) then
+		    io.write(table2string(data));
+		end;
+	    else
+		io.write("cmd>");
+	    end;
+	end;
+
+    else
+	print ("Error to connect "..res);
+    end;
+
+end;

@@ -1,0 +1,12 @@
+name : upsampler, 0xb0000000, 0x1000
+driver: 0
+info: "The test registers that controls up sampler, provided by Ziv"
+version: 1.0
+
+reg: reset, 0x40, 32, "For reset,write 0 followed by 1"
+reg: fifo_reset, 0x48, 32, "For reset,write 1"
+reg: XLLF_SRR_OFFSET, 0x28, 32, "Local Link Reset"
+reg: XLLF_TDFR_OFFSET, 0x08, 32, "Transmit Reset"
+reg: XLLF_RDFR_OFFSET, 0x18, 32, "Receive Reset"
+reg: XLLF_IER_OFFSET, 0x04, 32, "Interrupt Enable"
+reg: XLLF_ISR_OFFSET, 0x00, 32, "Interrupt Status"

@@ -1,0 +1,146 @@
+-- Injection of file.
+-- Usage: <inject start| stop> <-h | --help> < -f|--file filename> | <-c|--cycles num_cycles or 0>[ -m <PL-module-id>]
+-- cli:continued
+
+file_name = "N/A"
+src_file_name = "N/A"
+dst_file_name = "N/A"
+num_cycles = "1"
+inject_handle = -1
+session_id = 0
+bandwidth = 0
+
+function help()
+  print("Version 0.1")
+  print("Performs injection of specified file content via DMA.")
+  print("Usage: inject <-h|--help> <start| stop> < -f|--file  filename> [ -c <num_cycles or 0 (forever)] [ -m <PL-module-id>] [ -v verbose]")
+  print("E.g. >inject -f <path_to_file> -c 0")
+  print("     >inject start")
+  print("     >inject stop")
+end
+
+function file_exists(name)
+   local f=io.open(name,"r")
+   if f~=nil then io.close(f) return true else return false end
+end
+
+function show_parameters()
+   print("file to inject: "..file_name)
+   print("number of cycles "..num_cycles)
+   if inject_handle > 0 then
+     print("Inject in progress")
+   else
+     print("Inject is not running")
+   end
+end
+
+	function main(...)
+	 	local command = "/usr/bin/inject-record"
+		local verbose = 0
+		local arg={...}
+		pl_module_id = -1
+		local start = 0
+                local args = 0
+		if #arg < 1 then
+		  help()
+		  return
+		end
+		for i,v in ipairs(arg) do
+			if (v == "-h") or (v == "--help") then
+				help()                              
+				return
+			elseif (v == "show") then
+				show_parameters()
+				return
+			elseif (v == "-f") or (v == "--file") then
+			  file_name = arg[i+1]
+				if file_exists(file_name) then
+					print("Using file "..file_name)
+				else
+					print("File "..file_name.." not found")
+					return
+				end
+			elseif (v == "--src") then
+				src_file_name = arg[i+1]
+				if file_exists(src_file_name) then
+					print("Using source file name file "..src_file_name)
+				else
+					print("File "..src_file_name.." not found")
+					return
+				end
+			elseif (v == "--dst") then
+			  dst_file_name = arg[i+1]
+			  print("Using destination file "..dst_file_name)
+			elseif (v == "--id") then
+			  session_id = arg[i+1]
+			  print("Using session_id "..session_id)
+			elseif (v == "-b") then
+			  bandwidth = arg[i+1]
+			  print("Using bandwidth "..bandwidth)
+			elseif (v == "-c") or (v == "--cycles") then
+              num_cycles = arg[i+1]
+			  if num_cycles == "0" then
+			    print("Running forever")
+			  else
+                print("Running "..num_cycles.."  times")
+		 	  end
+			elseif v == "-m" then
+				pl_module_id = arg[i +1]
+				print("Using pl module_id "..pl_module_id)
+				local cmd_script = "init_module"..pl_module_id
+				err, msg = cli(cmd_script)
+				if (err >=0 ) then
+					print(msg)
+				end
+			elseif v == "start" then
+				start = 1
+			elseif v == "-v" then
+				verbose = 1
+				print("Verbose the flow")
+			elseif v == "stop" then                    
+				if inject_handle > 0 then
+					err = proc_kill(inject_handle, 2)
+					err = proc_wait(inject_handle);
+					inject_handle = -1
+				else
+					print("inject is not running")
+				end
+			else    
+--                          print("Not implemented: "..v)
+			end
+		end
+		if start == 1 then
+			args = "inject -c "..num_cycles
+			if file_name ~= "N/A" then
+				args = args.." -f "..file_name
+			end
+			if verbose == 1 then
+				args = args.." -v"
+			end
+			if src_file_name ~= "N/A" then
+				args = args.." --src "..src_file_name
+			end
+			if dst_file_name ~= "N/A" then
+				args = args.." --dst "..dst_file_name
+			end
+			if session_id ~= 0 then
+				args = args.." --id "..session_id
+			end
+			if bandwidth ~= 0 then
+				args = args.." -b "..bandwidth
+			end
+			inject_handle = proc_create(command, args.." &") --os.execute(command..args.."&") --(proc_create(command, args.."&")
+			if inject_handle < 0 then
+				print("Failed to run script "..command.." "..args)
+			else
+				if num_cycles ~= "0" then
+					err = proc_wait(inject_handle)
+					err = proc_kill(inject_handle, 2)
+					err = proc_wait(inject_handle)
+					inject_handle = -1
+				end
+		    	print("")
+		    	print("")
+			end
+		end
+	end;

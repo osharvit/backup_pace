@@ -1,0 +1,28 @@
+name : fft, 0xb0010000, 0x1000
+driver: 0
+info: "The test registers that controls FFT, provided by Ziv"
+version: 1.0
+
+reg: ctrl, 0x40, 32, "the fft GO , the PL will run when change from 0 to 1"
+reg: status, 0x44, 32, "clear on read"
+reg: seq_num_slot, 0x48, 32, "Sequence number of the slot"
+reg: seq_num_symbol, 0x4C, 32, "Sequence number of the symbol"
+reg: seq_num_layer, 0x50, 32, "Sequence number of the layer"
+reg: fft_error, 0x54, 32, "error indication at the block (IFFT) - currently A.C ready"
+reg: fft_error_status, 0x58, 32, "the error origins – relevant only in case “ifft_error” asserted high"
+reg: nfft_cfg, 0x5C, 32, "Size of FFT"
+reg: amount_of_samples, 0x60, 32, "Number of SCS to map"
+reg: pad_before_samples, 0x64, 32, "{2^nfft -maxnSCS)}/2"
+reg: pad_after_samples, 0x68, 32, "{2^nfft -maxnSCS)}/2"
+reg: fft_cp_len_all_cfg0, 0x6C, 32, "Length of CP"
+reg: fft_cp_len_all_cfg1, 0x70, 32, "Length of CP"
+reg: fft_seq_all_sel_cfg, 0x74, 32, "Length of CP select =0"
+reg: ftt_transform_configuration, 0x78, 32, "TBD : transform_length[4:0], bit 8 set to logic '1' -FFT "
+reg: fft_scale, 0x7C, 32, "the FFT status bus"
+reg: enable_half_transform_shift , 0x80, 32, "1- enable shift /0 -disable shift"
+reg: start_index_profile_0, 0x84, 32, "fft start"
+reg: start_index_profile_1, 0x88, 32, "fft start"
+reg: start_index_profile_select, 0x8C, 32, "start_index profile select "
+reg: sample_point_profile_0, 0x90, 32, " fft_strat  - profile 0"
+reg: sample_point_profile_1, 0x94, 32, " fft_strat  - profile 1"
+reg: sample_point_profile_select, 0x98, 32, "fftStart profile select"

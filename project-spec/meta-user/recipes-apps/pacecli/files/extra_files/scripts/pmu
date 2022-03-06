@@ -1,0 +1,346 @@
+PMBUS_PAGE			            = 0x00
+PMBUS_OPERATION		          = 0x01
+PMBUS_ON_OFF_CONFIG	        = 0x02
+PMBUS_CLEAR_FAULTS	        = 0x03
+PMBUS_PHASE			            = 0x04
+PMBUS_WRITE_PROTECT	        = 0x10
+PMBUS_CAPABILITY	          = 0x19
+PMBUS_QUERY			            = 0x1A
+
+PMBUS_VOUT_MODE		          = 0x20
+PMBUS_VOUT_COMMAND	        = 0x21
+PMBUS_VOUT_TRIM		          = 0x22
+PMBUS_VOUT_CAL_OFFSET	      = 0x23
+PMBUS_VOUT_MAX			        = 0x24
+PMBUS_VOUT_MARGIN_HIGH		  = 0x25
+PMBUS_VOUT_MARGIN_LOW		    = 0x26
+PMBUS_VOUT_TRANSITION_RATE	= 0x27
+PMBUS_VOUT_DROOP		        = 0x28
+PMBUS_VOUT_SCALE_LOOP		    = 0x29
+PMBUS_VOUT_SCALE_MONITOR	  = 0x2A
+
+PMBUS_COEFFICIENTS		      = 0x30
+PMBUS_POUT_MAX			        = 0x31
+
+PMBUS_FAN_CONFIG_12		      = 0x3A
+PMBUS_FAN_COMMAND_1		      = 0x3B
+PMBUS_FAN_COMMAND_2		      = 0x3C
+PMBUS_FAN_CONFIG_34		      = 0x3D
+PMBUS_FAN_COMMAND_3		      = 0x3E
+PMBUS_FAN_COMMAND_4		      = 0x3F
+
+PMBUS_VOUT_OV_FAULT_LIMIT	    = 0x40
+PMBUS_VOUT_OV_FAULT_RESPONSE  = 0x41
+PMBUS_VOUT_OV_WARN_LIMIT	    = 0x42
+PMBUS_VOUT_UV_WARN_LIMIT	    = 0x43
+PMBUS_VOUT_UV_FAULT_LIMIT	    = 0x44
+PMBUS_VOUT_UV_FAULT_RESPONSE  = 0x45
+PMBUS_IOUT_OC_FAULT_LIMIT	    = 0x46
+PMBUS_IOUT_OC_FAULT_RESPONSE  = 0x47
+PMBUS_IOUT_OC_LV_FAULT_LIMIT  = 0x48
+PMBUS_IOUT_OC_LV_FAULT_RESPONSE	= 0x49
+PMBUS_IOUT_OC_WARN_LIMIT	    = 0x4A
+PMBUS_IOUT_UC_FAULT_LIMIT	    = 0x4B
+PMBUS_IOUT_UC_FAULT_RESPONSE  = 0x4C
+
+PMBUS_OT_FAULT_LIMIT		      = 0x4F
+PMBUS_OT_FAULT_RESPONSE		    = 0x50
+PMBUS_OT_WARN_LIMIT		        = 0x51
+PMBUS_UT_WARN_LIMIT		        = 0x52
+PMBUS_UT_FAULT_LIMIT		      = 0x53
+PMBUS_UT_FAULT_RESPONSE		    = 0x54
+PMBUS_VIN_OV_FAULT_LIMIT	    = 0x55
+PMBUS_VIN_OV_FAULT_RESPONSE	  = 0x56
+PMBUS_VIN_OV_WARN_LIMIT		    = 0x57
+PMBUS_VIN_UV_WARN_LIMIT		    = 0x58
+PMBUS_VIN_UV_FAULT_LIMIT	    = 0x59
+
+PMBUS_RUN_TIME_CLOCK		      = 0xD7
+
+BUS_NUMBER = 0x0;
+BUS_0_MUX = 0x70;
+UCD_PORT_IN_MUX = 0x1;
+UCD_MUX_ADDR = 0x7e;
+
+function help()
+  print("get/set PMU components values")
+  print("Usage: pmu <COMPONENT> [OPERATION] [ARGS]")
+  print("\t COMPONENT: voltage, time, watchdog")
+  print("\t [OPERATION] optional: get/set")
+  print("\t [ARGS] optional: get - rail number(0-15), set: LIMIT - fault/warning")
+  print("\t Examples:  1) pmu voltage get voltage #rail")
+  print("              2) pmu voltage set fault rail number <over_limit> <under_limit>")
+  print("              3) pmu voltage get warning rail number")
+  print("              4) pmu time")
+end
+
+local function round(x)
+  return (math.floor(x+0.5))
+end
+
+local function pmu_set_page(rail)
+  local cmd;
+  local res;
+
+  cmd = "i2ctransfer -y -f -a "..BUS_NUMBER.." w2@"..UCD_MUX_ADDR.." "..PMBUS_PAGE.. " "..rail
+  res = os.execute(cmd)
+  if res == false then
+    print("Failed to configure page "..rail)
+    return
+  end
+end
+
+-- Function to conver a 5 digit 2 complement number to it's decimal value
+local function two_complement_to_decimal(number)
+  local result;
+  local negative = (number and  (1<<4)) ~= 0;
+  if (negative)
+    then
+      result = -1 * (((~number) & (0xf)) +1);
+    else
+      result = number
+  end
+  return result
+end
+
+local function get_linear16_value(exp_read_cmd, mantissa_read_cmd)
+
+  local result;
+  local exponent;
+  local mantissa;
+  local output;
+  local handle;
+
+  --read linear16 value - V=2^exponent * mantissa
+  handle = io.popen(exp_read_cmd)
+  output = handle:read("*a")
+  for i in string.gmatch(output, "%x+") do
+    exponent = tonumber(i,16)
+  end
+  exponent = (two_complement_to_decimal(exponent))
+
+  handle = io.popen(mantissa_read_cmd)
+  output = handle:read("*a")
+  for i in string.gmatch(output, "%x+") do
+    mantissa = tonumber(i,16)
+  end
+
+  result = 2^exponent * mantissa
+  return result;
+
+end
+
+local function voltage_get(rail_number)
+  local exp_cmd;
+  local mantissa_cmd;
+  local result;
+
+  exp_cmd = "i2cget -y -f -a "..BUS_NUMBER.." "..UCD_MUX_ADDR.." "..PMBUS_VOUT_MODE.." b"
+  mantissa_cmd = "i2cget -y -f -a "..BUS_NUMBER.." "..UCD_MUX_ADDR.." "..PMBUS_VOUT_COMMAND.." w"
+  result = get_linear16_value(exp_cmd, mantissa_cmd)
+  return result;
+end
+
+local function fault_limit_get(rail)
+  local exp_cmd;
+  local mantissa_cmd
+  local fault;
+  local voltage;
+  local over;
+  local under;
+  local result;
+
+  exp_cmd = "i2cget -y -f -a "..BUS_NUMBER.." "..UCD_MUX_ADDR.." "..PMBUS_VOUT_MODE.." b"
+  voltage = voltage_get(rail)
+    --Get the OV fault limit
+  mantissa_cmd = "i2cget -y -f -a "..BUS_NUMBER.." "..UCD_MUX_ADDR.." "..PMBUS_VOUT_OV_FAULT_LIMIT.." w"
+  fault = get_linear16_value(exp_cmd, mantissa_cmd)
+  over = round(((fault*100)/voltage) - 100)
+  --Get the UV fault limit
+  mantissa_cmd = "i2cget -y -f -a "..BUS_NUMBER.." "..UCD_MUX_ADDR.." "..PMBUS_VOUT_UV_FAULT_LIMIT.." w"
+  fault = get_linear16_value(exp_cmd, mantissa_cmd)
+  under = round(math.abs((fault*100/voltage) - 100))
+  result = "Over: "..over.."%\nUnder: "..under.."%";
+  return result
+end
+
+local function warning_limit_get(rail)
+  local exp_cmd;
+  local mantissa_cmd
+  local fault;
+  local voltage;
+  local over;
+  local under;
+  local result;
+
+  exp_cmd = "i2cget -y -f -a "..BUS_NUMBER.." "..UCD_MUX_ADDR.." "..PMBUS_VOUT_MODE.." b"
+  voltage = voltage_get(rail)
+    --Get the OV fault limit
+  mantissa_cmd = "i2cget -y -f -a "..BUS_NUMBER.." "..UCD_MUX_ADDR.." "..PMBUS_VOUT_OV_WARN_LIMIT.." w"
+  fault = get_linear16_value(exp_cmd, mantissa_cmd)
+  over = round(((fault*100)/voltage) - 100)
+  --Get the UV fault limit
+  mantissa_cmd = "i2cget -y -f -a "..BUS_NUMBER.." "..UCD_MUX_ADDR.." "..PMBUS_VOUT_UV_WARN_LIMIT.." w"
+  fault = get_linear16_value(exp_cmd, mantissa_cmd)
+  under = round(math.abs((fault*100/voltage) - 100))
+  result = "Over: "..over.."%\nUnder: "..under.."%";
+  return result
+end
+
+
+local function find_mantissa_value(exponent, voltage)
+  return (voltage/(2^exponent))
+end
+
+--Set thrshold limit for the level (warning, fault)
+local function voltage_limit_set(rail, over, under, level)
+
+  local over_reg;
+  local under_reg;
+  local exp_cmd;
+  local mantissa_cmd;
+  local voltage;
+  local exponent;
+  local mantissa;
+  local handle;
+  local output;
+  local low ;
+  local high;
+  local result;
+
+  if(level == "fault") then
+    over_reg = PMBUS_VOUT_OV_FAULT_LIMIT
+    under_reg = PMBUS_VOUT_UV_FAULT_LIMIT
+  elseif (level == "warning") then
+    over_reg = PMBUS_VOUT_OV_WARN_LIMIT
+    under_reg = PMBUS_VOUT_UV_WARN_LIMIT
+  end
+
+  exp_cmd = "i2cget -y -f -a "..BUS_NUMBER.." "..UCD_MUX_ADDR.." "..PMBUS_VOUT_MODE.." b"
+  handle = io.popen(exp_cmd)
+  output = handle:read("*a")
+  for i in string.gmatch(output, "%x+") do
+    exponent = tonumber(i,16)
+  end
+  exponent = (two_complement_to_decimal(exponent))
+
+  --Set over voltage fault limit
+  voltage = voltage_get(rail)
+  voltage = voltage * (1 + (over/100)) -- multiply by "over" value(%) got as param
+  mantissa = round(find_mantissa_value(exponent, voltage))
+  low = (mantissa & 0xff)
+  high = ((mantissa >> 8) & 0xff)
+  mantissa_cmd = "i2ctransfer -y -f -a "..BUS_NUMBER.." w3@"..UCD_MUX_ADDR.." "..over_reg.." "..low.." "..high
+  handle = io.popen(mantissa_cmd)
+
+  --Set under voltage fault
+  voltage = voltage_get(rail)
+  voltage = voltage * (1 - (under/100)) -- multiply by "under" value()% got as param
+  mantissa = round(find_mantissa_value(exponent, voltage))
+  low = (mantissa & 0xff)
+  high = ((mantissa >> 8) & 0xff)
+  mantissa_cmd = "i2ctransfer -y -f -a "..BUS_NUMBER.." w3@"..UCD_MUX_ADDR.." "..under_reg.." "..low.." "..high
+  handle = io.popen(mantissa_cmd)
+  return "OK"
+end
+
+
+local function read_system_time()
+
+  local cmd;
+  local handle;
+  local output;
+  local result;
+  local bytes = {};
+  local index;
+  local millis;
+  local seconds;
+  local minutes;
+  local hours;
+  local days;
+
+  index = 0;
+  cmd = "i2ctransfer -y -f -a "..BUS_NUMBER.." w1@"..UCD_MUX_ADDR.." "..PMBUS_RUN_TIME_CLOCK.." r9"
+  handle = io.popen(cmd)
+  output = handle:read("*a")
+  for i in string.gmatch(output, "%x%x") do
+      bytes[index] = i
+      index = index+1;
+  end
+  millis = tonumber(""..bytes[1]..bytes[2]..bytes[3]..bytes[4], 16)
+  seconds = (millis/1000)
+  minutes = (seconds /60)
+  seconds = math.floor((seconds%60))
+  hours = math.floor((minutes/60))
+  minutes = math.floor((minutes%60))
+
+  days = tonumber(""..bytes[5]..bytes[6]..bytes[7]..bytes[8], 16)
+
+  result = "Days:"..days.."\nHours:"..hours..",Minutes:"..minutes..",Seconds:"..seconds
+  return result;
+end
+
+function main(...)
+  local operation;
+  local set_mux;
+  local rail_number;
+  local result;
+  local values;
+  local over_limit;
+  local under_limit;
+  local arg={...}
+
+
+  print("Running PMU script..")
+
+--Set the I2C mux output to the UCD90160--
+  set_mux = "i2cset -y -f -a "..BUS_NUMBER.." "..BUS_0_MUX.." "..UCD_PORT_IN_MUX
+  result = os.execute(set_mux);
+  if result == false then
+    print("ERROR: Failed to configure mux "..BUS_0_MUX.." to output "..UCD_PORT_IN_MUX)
+    return
+  end
+
+--Read args from command line--
+  if #arg < 1 then
+    print("Bad args!")
+    help()
+    return
+  elseif (arg[1] == "time") then
+    result = read_system_time()
+  elseif (arg[1] == "voltage") then
+    if #arg < 4 then
+      print("Bad args! - pmu voltage get/set voltage/fault/warning rail#(0-15) [ARGS [over_limit%] [under_limit%] set CMD]")
+    else
+      operation = arg[2] --get/set
+      rail_number = tonumber(arg[4])
+      if(rail_number < 0 or rail_number > 15) then
+        print("Bad rail number! please enter valid rail number (0-15)")
+      else
+        pmu_set_page(rail_number)
+      end
+      if(operation == "get") then
+        if(arg[3] == "voltage") then
+          result = voltage_get(rail_number)
+        elseif(arg[3] == "fault") then
+          result = fault_limit_get(rail_number)
+        elseif(arg[3] == "warning") then
+          result = warning_limit_get(rail_number)
+        end
+      elseif(operation == "set") then
+        if(arg[3] == "fault") then
+          over_limit = tonumber(arg[5])
+          under_limit = tonumber(arg[6])
+          result = voltage_limit_set(rail_number, over_limit, under_limit, arg[3])
+        elseif(arg[3] == "warning") then
+          over_limit = tonumber(arg[5])
+          under_limit = tonumber(arg[6])
+          result = voltage_limit_set(rail_number, over_limit, under_limit, arg[3])
+        else
+          print("Bad args! Please use: pmu voltage set <RAIL> <LEVEL> <over> <under>\n")
+        end
+      end
+    end
+  end
+  print(result)
+end

@@ -1,0 +1,7 @@
+-- This is my test script, it prints Hello world
+-- and it takes one argument, the message to print
+
+function main(arg)
+  print ("Hello world");
+  print (arg);
+end;

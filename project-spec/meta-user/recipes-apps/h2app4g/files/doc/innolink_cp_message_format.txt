@@ -1,0 +1,82 @@
+From: Piers O'Hanlon <pohanlon@innophaseinc.com> 
+Sent: Tuesday, January 19, 2021 3:50 PM
+To: Jongheon (Eric) Kim <jkim@innophaseinc.com>; Matt Porter <mporter@innophaseinc.com>
+Cc: Brent Little <blittle@innophaseinc.com>
+Subject: Re: Proposed workaround solution for H2HW-57 & H2HW-81 for A0 silicon
+
+
+After further discussion with Eric, we will use only the MSB of what I will in future refer to as the segment byte / field to indicate that it's the last segment of a message, thus leaving us with 7 bits to use for the sequence number, yielding a max of 128 segments * 47 bytes max / segment = 6016 bytes max message size.
+
+Segment field (8 bits): INNN NNNN, where I = last segment indicator & NNN NNNN = segment sequence number
+
+Piers.
+
+On Mon, Jan 18, 2021 at 5:40 PM Piers O'Hanlon <pohanlon@innophaseinc.com> wrote:
+Hi Eric,
+
+After discussing with Matt, in order to produce a workaround for A0 silicon HW bugs H2HW-57 & H2HW-81, it seems like the best course of action is to segment & reassemble messages such that the entire packets are only 15 words long i.e. 12 words of payload = 48 bytes of payload (once preamble, control & postamble words are subtracted from total amount). 
+
+Since we don't need a uint16 anymore for the length whose value will be max 48 (actually 47, because I would like the last byte of payload for middle segments to be 0x00 pad to facilitate string operations), I propose repurposing the unused byte to be used as a segment sequence number & last segment indicator as depicted below.
+
+
+    // little-endian   memory_view          register_view
+    //                  +------+        +---------------+
+    //  preamble:       | 0x16 |        |   0x16161616  |
+    //                  | 0x16 |        |               |
+    //                  | 0x16 |        |               |
+    //                  | 0x16 |        |               |
+    //                  +------+        +---------------+
+    //  control         | 0x00 |        |   0xLLIN0D00  |
+    //                  +------+        |               |
+    //  destid (D)      | 0x0D |        |               |
+    //                  +------+        |               |
+    // last segment     |      |        |               |
+    // indicator (I)    | 0xIN |        |               |
+    // segment sequence |      |        |               |
+    // number (N)       |      |        |               |
+    //                  +------+        |               |
+    //  length (LL)     | 0xLL |        |               |
+    //                  +------+        +---------------+
+    //            '0'   | 0x30 |        |   0x00323130  |
+                                              ^
+                                             Pad
+Last segment indicator (I) = 
+0x0N (middle segment)
+0xFN (last segment)
+
+Segment sequence number (N) would start at 0 & count up sequentially for each segment within a message, and is reset to 0 for the 1st segment of a new message.
+
+So values of IN for a message requiring 5 segments (4 full segments & last 5th segment, which may be only partially used) would be e.g.
+0x00 (1st segment)
+0x01 (2nd segment)
+0x02 (3rd segment)
+0x03 (4th segment)
+0xF4 (5th & last segment of message)
+
+0x00 (1st segment of next message)
+0x01 (2nd segment of next message)
+..
+..
+etc.
+
+Note that:
+- the last byte of payload for middle segments should be 0x00 pad to facilitate string operations
+- length field for middle segments in bytes would be 48 - 1 for 0x00 pad = 47
+- length field for last segment would be variable depending on how much data is left to send
+- valid values for length for last segment would be 1 - 47 (it it was 0, we finished last segment, and if we need 48 or more, it's not the last segment)
+
+Receive state machine would be:
+- receive segment
+- is I = 0xF?
+    - if no  ==> middle segment, so check sequence number is next expected, strcat segment to end of any previous segments and keep storing until complete message received
+    - if yes ==> last segment, so check sequence number is next expected, strcat segment to end of any previous segments, forward now complete message for processing
+
+Transmit state machine would be:
+- do we have more than 47 bytes of payload left to send?
+    - if yes ==> middle segment, so increment TX sequence number & fill in N field (make sure I field = 0), send next 47 bytes of payload
+    - if no ==> last segment, so increment TX sequence number & fill in N field, set I field to 0xF to indicate it's the last segment, and send remaining bytes of payload
+
+Since the HW bugs are expected to affect both directions, we would employ the same segmentation & reassembly scheme in both directions.
+Piers.
+
+

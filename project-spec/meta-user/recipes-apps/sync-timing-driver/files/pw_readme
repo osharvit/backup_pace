@@ -1,0 +1,23 @@
+How to build smart driver
+1. edit sync_timing_driver_env.sh
+Need to set the path to petalinux settings.sh, replace
+/opt/petalinux/${PETALINUX_VERSION}/environment-setup-aarch64-xilinx-linux
+to actual location, e.g.:
+/home/user/Xilinx2020.1/settings.sh
+2. set the environment by typing
+source sync_timing_driver_env.sh
+3. Set cross compiler
+export CC=aarch64-linux-gnu-gcc
+4. build smart driver
+make all
+5. smart driver will be found in
+output/sync_timing_driver_app/sync_timing_driver_app
+6. Copy cfg/sync_timing_driver.conf on board into /etc/
+7. run sync_timing_driver_app on board.
+8. To configure frequency from sync_timing_driver_app prompt:
+driver
+dload_image /path/to/prod.bin  /path/to/user.bin
+version
+
+
+

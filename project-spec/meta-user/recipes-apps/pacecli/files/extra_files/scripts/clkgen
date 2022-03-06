@@ -1,0 +1,121 @@
+-- configure clock generator; use the instructions prepared by clock builder. Usage: <i2c bus number> <i2c Mux address> <mux_out_bus_number> <i2c Clk_gen address> <clock builder register file> E.g: clkgen 0 0x71 0x02 0x74 /home/root/Si5341-RevD-Registers.h
+
+function help()
+  print("Version: 0.1");
+  print("configure clock generator; use the instructions prepared by clock builder.")
+  print("Required I2C tools installed on board")
+  print("Usage: <i2c bus number> <i2c Mux address> <mux_out_bus_number> <i2c Clk_gen address> <clock builder register file>")
+  print("E.g: >clkgen 0 0x71 0x02 0x74 /home/root/Si5341-RevD-Registers.h")
+end
+
+output_lines = {}
+gByte0 = 0
+function file_exists(file)
+  local f = io.open(file, "rb")
+  if f then f:close() end
+  return f ~= nil
+end
+
+function lines_from(file)
+  if not file_exists(file) then
+    print("file "..file.."  not found")
+    return {} 
+  end
+  lines = {}
+  for line in io.lines(file) do 
+    lines[#lines + 1] = line
+  end
+  return lines
+end
+
+--This function finds the filename when given a complete path 
+function SplitFilename(strFilename)
+  local index = string.find(strFilename, "/[^/]*$")
+  local s = string.sub(strFilename, index +1)
+  return s
+end
+
+
+function create_output(inp_file_name,i2c_bus, i2c_mux_addr, i2c_clk_gen_addr, mux_out_bus_addr)
+  base_name = SplitFilename(inp_file_name)
+  local  out_file_name = "/tmp/"..base_name..".sh"
+--  print("new name : "..out_file_name)
+  local fo = io.open(out_file_name, "wb")
+  fo:write("#Configuration for Clock Generator "..i2c_clk_gen_addr.." based on "..inp_file_name, "\n")
+  fo:write("i2cset -y -f "..i2c_bus.." "..i2c_mux_addr.." "..mux_out_bus_addr, "\n")
+  for k,v in pairs(output_lines) do
+	fo:write("i2cset -y -f "..i2c_bus.." "..i2c_clk_gen_addr.." "..v, "\n")
+  end
+  fo:close()
+  return out_file_name
+end
+
+function parse_line(reg_line)
+  local outline
+  i, j = string.find(reg_line, "{")
+  s = string.sub(reg_line, i+1)
+  i, j = string.find(s, "}")
+  s = string.sub(s, 0, i -1)
+  reg, val = s:match("([^,]+),([^,]+)")
+--split 2 byte address into 2 one-byte addresses
+--  print(reg.." "..val)
+  byte0 = string.sub(reg, 1, 5)
+  byte1 = string.sub(reg, 6, 7)
+--  print(byte0.."  "..byte1)
+  if byte0 == "0x00" then
+    outline = reg.." "..val
+	output_lines[#output_lines + 1] = outline
+--	print(outline)
+  elseif gByte0 == byte0 then
+    outline = "0x"..byte1.." "..val
+	output_lines[#output_lines + 1] = outline
+--	print(outline)
+  else 
+    outline = "0x01 "..byte0
+	output_lines[#output_lines + 1] = outline
+--	print(outline)
+	outline = "0x"..byte1.." "..val
+	output_lines[#output_lines + 1] = outline
+--	print(outline)
+	gByte0 = byte0
+  end
+end
+
+function main(i2c_bus, i2c_mux_addr, mux_out_bus_addr, i2c_clk_gen_addr, file)
+	if (i2c_bus == nil) or (i2c_bus == "-h") or (i2c_bus == "--help") then
+	  help()
+          return 
+	end	
+	local flines = lines_from(file)
+        if not next(flines) then
+          return
+        end
+	--for k,v in pairs(flines) do
+	--  print('line[' .. k .. ']', v)
+	--end
+	for k,v in pairs(flines) do
+	  if string.find(v, "{") and string.find(v, "}") then
+	--   print(v)
+		parse_line(v)
+	  end
+	end
+	if next(output_lines) ~= nil then
+	  output_script = create_output(file, i2c_bus, i2c_mux_addr, i2c_clk_gen_addr, mux_out_bus_addr)
+          local cmd = "sh "..output_script
+          local t = os.execute(cmd);
+          if t == true then
+            print("Configuration set successfully")
+          else
+            print("Failed to run script "..cmd)
+          end
+	else
+	  print("Failed to create configuration")
+	end
+end;
+--if #arg < 1 then
+--	print ("usage: lua " .. arg[0] .. " <i2c bus number> <i2c Mux address> <mux_out_bus_number> <i2c Clk_gen address> <clock builder register file>")
+--	print("E.g: ".. arg[0] .. "0 0x71 0x02 0x74 Si5341-RevD-Registers.h")
+--	return
+--end
+--print("Using clock builder output file: "..arg[5]);
+--main(arg[1], arg[2], arg[3], arg[4], arg[5])
